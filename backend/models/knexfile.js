@@ -1,16 +1,16 @@
 // Update with your config settings.
-
+const config = require('../config/config')
 module.exports = {
 
   development: {
     client: 'mysql',
     connection: {
-      host : '127.0.0.1',
-      user : 'root',
-      password : '',
-      database : 'IT5005',
+      host: config.dbHost,
+      user: config.userDB,
+      password: config.passwordDB,
+      database: config.db,
       acquireConnectionTimeout: 10000,
-      timezone : "+0:00"
+      timezone: "+00:00"
     }
   },
 
