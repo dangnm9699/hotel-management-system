@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8080";
+const baseUrl = "http://localhost:3001";
 //request interceptor to add the auth token header to requests
 axios.interceptors.request.use(
     (config) => {
@@ -51,16 +51,31 @@ const api = {
         return new Promise(resolve => setTimeout(resolve, ms));
     },
     register: (body) => {
-        return axios.post(`${baseUrl}/register`, body);
+        return axios.post(`${baseUrl}/auth/register`, body);
     },
     login: (body) => {
-        return axios.post(`${baseUrl}/login`, body);
+        return axios.post(`${baseUrl}/auth/login`, body);
     },
     refreshToken: () => {
-        return axios.post(`${baseUrl}/refresh-token`);
+        return axios.post(`${baseUrl}/auth/refresh-token`);
     },
     logout: () => {
-        return axios.post(`${baseUrl}/logout`);
+        return axios.post(`${baseUrl}/auth/logout`);
+    },
+    createRoom: (data) => {
+        return axios.post(`${baseUrl}/room`, data);
+    },
+    getlistroom: (page) => {
+        return axios.get(`${baseUrl}/room?page=${page}&perpage=8`);
+    },
+    updateRoom: (id, data) => {
+        return axios.put(`${baseUrl}/room/${id}`, data);
+    },
+    getRoom: (id) => {
+        return axios.get(`${baseUrl}/room/${id}`);
+    },
+    deleteRoom: (id) => {
+        return axios.delete(`${baseUrl}/room/${id}`)
     }
 }
 
