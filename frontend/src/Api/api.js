@@ -1,4 +1,5 @@
 import axios from "axios";
+import Page500 from "../components/Page500/Page500";
 const baseUrl = "http://localhost:3001";
 //request interceptor to add the auth token header to requests
 axios.interceptors.request.use(
@@ -65,6 +66,9 @@ const api = {
     createRoom: (data) => {
         return axios.post(`${baseUrl}/room`, data);
     },
+    searchListRoom: (page, key) => {
+        return axios.get(`${baseUrl}/room/search?key=${key}&page=${page}&perpage=8`);
+    },
     getlistroom: (page) => {
         return axios.get(`${baseUrl}/room?page=${page}&perpage=8`);
     },
@@ -76,6 +80,51 @@ const api = {
     },
     deleteRoom: (id) => {
         return axios.delete(`${baseUrl}/room/${id}`)
+    },
+    createGuest: (data) => {
+        return axios.post(`${baseUrl}/guest`, data);
+    },
+    getlistguest: (page) => {
+        return axios.get(`${baseUrl}/guest?page=${page}&perpage=8`);
+    },
+    getGuest: (id) => {
+        return axios.get(`${baseUrl}/guest/${id}`);
+    },
+    updateGuest: (id, data) => {
+        return axios.put(`${baseUrl}/guest/${id}`, data);
+    },
+    deleteGuest: (id) => {
+        return axios.delete(`${baseUrl}/guest/${id}`)
+    },
+    searchListGuest: (page, key) => {
+        return axios.get(`${baseUrl}/guest/search?key=${key}&page=${page}&perpage=8`);
+    },
+    createStaff: (data) => {
+        return axios.post(`${baseUrl}/staff`, data);
+    },
+    getStaff: (id) => {
+        return axios.get(`${baseUrl}/staff/${id}`);
+    },
+    updateStaff: (id, data) => {
+        return axios.put(`${baseUrl}/staff/${id}`, data);
+    },
+    deleteStaff: (id) => {
+        return axios.delete(`${baseUrl}/staff/${id}`)
+    },
+    searchRoomName: (page, key) => {
+        return axios.get(`${baseUrl}/room/searchname?key=${key}&page=${page}&perpage=8`);
+    },
+    getIdleRoomByType: (type) => {
+        return axios.get(`${baseUrl}/room/getidleroombytype?type=${type}`);
+    },
+    searchGuestByPhoneNumber: (key) => {
+        return axios.get(`${baseUrl}/guest/searchbyphone?key=${key}&page=1`);
+    },
+    searchGuestName: (page, key) => {
+        return axios.get(`${baseUrl}/guest/searchname?key=${key}&page=${page}&perpage=8`);
+    },
+    quickbooking: (data) => {
+        return axios.post(`${baseUrl}/order`, data)
     }
 }
 
