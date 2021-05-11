@@ -41,8 +41,8 @@ exports.getRoom = async function (req, res) {
 
 exports.getRoomList = async function (req, res) {
     try {
-        let page = req.query.page || 1
-        let perpage = req.query.perpage || 1000
+        let page = parseInt(req.query.page, 10) || 1
+        let perpage = parseInt(req.query.perpage) || 1000
         let result = await Room.getRoomList(page, perpage)
         result.success = true
         res.json(result)
@@ -107,6 +107,38 @@ exports.searchRoom = async function (req, res) {
         let page = req.query.page || 1
         let perpage = req.query.perpage || 1000
         let result = await Room.searchRoom(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+
+exports.searchRoomName = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Room.searchRoomName(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+
+exports.getIdleRoomByType = async function (req, res) {
+    try {
+        let type = req.query.type
+        let result = await Room.getIdleRoomByType(type)
         result.success = true
         res.json(result)
     } catch (err) {

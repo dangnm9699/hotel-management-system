@@ -55,6 +55,23 @@ exports.getGuestList = async function (req, res) {
     }
 }
 
+exports.searchByPhoneNumber = async function (req, res) {
+    try {
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let key = req.query.key
+        let result = await Guest.searchGuestByPhoneNumber(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+
 exports.updateGuest = async function (req, res) {
     try {
         let count = await Guest.updateGuest(req.params.id, req.body)
@@ -92,6 +109,38 @@ exports.deleteGuest = async function (req, res) {
             success: true,
             count
         })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.searchGuestName = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Guest.searchGuestName(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.searchGuest = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Guest.searchGuest(page, perpage, key)
+        result.success = true
+        res.json(result)
     } catch (err) {
         console.log(err)
         res.status(500).json({

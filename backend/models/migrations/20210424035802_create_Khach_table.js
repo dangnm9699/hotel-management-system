@@ -4,6 +4,10 @@ exports.up = function (knex) {
         table.string('phonenumber').notNullable();
         table.string('name').notNullable();
         table.unique('phonenumber');
+        table.string('email').notNullable();
+        table.string('country').notNullable();
+        table.string('idNumber').notNullable();
+        table.string('status').notNullable().defaultTo('Hoạt động');
     })
 };
 

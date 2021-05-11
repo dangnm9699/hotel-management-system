@@ -7,7 +7,7 @@ const knex = require('knex')({
         password: config.passwordDB,
         database: config.db,
         acquireConnectionTimeout: 10000,
-        timezone: "+00:00"
+        timezone: "+07:00"
     }
 });
 

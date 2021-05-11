@@ -17,7 +17,7 @@ exports.getRoom = async function (id) {
 }
 
 exports.getRoomList = async function (page, perpage) {
-    return knex('Phong').paginate({ perPage: perpage, currentPage: page, isLengthAware: true });
+    return knex('Phong').whereNot('status', 'đã xoá').paginate({ perPage: perpage, currentPage: page, isLengthAware: true });
 }
 
 exports.updateRoom = async function (id, data) {
@@ -25,11 +25,19 @@ exports.updateRoom = async function (id, data) {
 }
 
 exports.deleteRoom = async function (id) {
-    return knex('Phong').where('Id', id).del()
+    return knex('Phong').where('Id', id).update({ 'status': 'đã xoá' })
 }
 
 exports.searchRoom = async function (page, perpage, key) {
-    return knex('Phong').where('name', 'like', `%${key}%`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex('Phong').where('name', 'like', `%${key}%`).whereNot('status', 'đã xoá').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
+exports.searchRoomName = async function (page, perpage, key) {
+    return knex('Phong').where('name', 'like', `%${key}%`).whereNot('status', 'đã xoá').select('name').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
+exports.getIdleRoomByType = async function (type) {
+    return knex('Phong').whereNot('status', 'đã xoá').where('type', type).where('status', 'Trống');
 }
 
 exports.dropTable = async function () {
