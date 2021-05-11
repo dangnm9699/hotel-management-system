@@ -3,7 +3,7 @@ import { ProSidebar, SidebarHeader, SidebarFooter, SidebarContent, Menu, SubMenu
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import { AiOutlineHome } from "react-icons/ai";
 import { IoAccessibility } from "react-icons/io5";
-import { BsFillBriefcaseFill } from "react-icons/bs";
+import { BsFillBriefcaseFill, BsFillLightningFill, BsPeopleCircle } from "react-icons/bs";
 import { withRouter } from 'react-router-dom';
 
 // import 'react-pro-sidebar/dist/css/styles.css';
@@ -12,13 +12,14 @@ import '../../scss/sideMenu.scss';
 class SideMenu extends React.Component {
   constructor(props) {
     super(props)
+    let currentLocation = window.location.pathname.slice(1)
     this.state = {
       image: '',
       collapsed: false,
       rtl: false,
       toggled: true,
       handleToggleSidebar: false,
-      menuSelected: 'dashboard',
+      menuSelected: currentLocation !== '' ? currentLocation : 'dashboard',
     }
   }
   collapseMenu = (e) => {
@@ -34,7 +35,7 @@ class SideMenu extends React.Component {
       menuSelected: value
     })
     this.props.history.push('/' + value)
-    
+
   }
   render() {
     return (
@@ -89,6 +90,13 @@ class SideMenu extends React.Component {
               onClick={e => this.selectMenu(e)}>
               {'Quản lý phòng'}
             </MenuItem>
+            <MenuItem icon={<BsPeopleCircle />}
+              active={true}
+              value='guest'
+              active={this.state.menuSelected === 'guest' ? true : false}
+              onClick={e => this.selectMenu(e)}>
+              {'Quản lý khách hàng'}
+            </MenuItem>
             <MenuItem icon={<IoAccessibility />}
               value='staff'
               active={this.state.menuSelected === 'staff' ? true : false}
@@ -96,20 +104,27 @@ class SideMenu extends React.Component {
             >
               {'Quản lý nhân viên'}
             </MenuItem>
+            <MenuItem icon={<BsFillLightningFill />}
+              value='quickbooking'
+              active={this.state.menuSelected === 'quickbooking' ? true : false}
+              onClick={e => this.selectMenu(e)}
+            >
+              {'Đặt phòng nhanh'}
+            </MenuItem>
             <SubMenu
               title={'Nghiệp vụ lễ tân'}
               icon={<BsFillBriefcaseFill />}
               iconshape="circle"
             >
               <MenuItem
-               value='checkin'
-               active={this.state.menuSelected === 'checkin' ? true : false}
-               onClick={e => this.selectMenu(e)}
+                value='checkin'
+                active={this.state.menuSelected === 'checkin' ? true : false}
+                onClick={e => this.selectMenu(e)}
               >{'Check in'}</MenuItem>
               <MenuItem
-               value='checkout'
-               active={this.state.menuSelected === 'checkout' ? true : false}
-               onClick={e => this.selectMenu(e)}
+                value='checkout'
+                active={this.state.menuSelected === 'checkout' ? true : false}
+                onClick={e => this.selectMenu(e)}
               >{'Check out'}</MenuItem>
             </SubMenu>
           </Menu>

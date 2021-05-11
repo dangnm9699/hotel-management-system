@@ -257,13 +257,13 @@ class Search extends React.Component {
         return (
             <Modal show={this.props.show} onHide={this.props.handleClose} size="lg" scrollable={true}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Search Results</Modal.Title>
+                    <Modal.Title>Kết quả tìm kiếm</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <div className="row">
-                        <div className="col">Phone Number</div>
-                        <div className="col">Name</div>
-                        <div className="col">Country</div>
+                        <div className="col">Số điện thoại</div>
+                        <div className="col">Tên khách hàng</div>
+                        <div className="col">Quốc tịch</div>
                     </div>
                     <hr />
                     <div className="container-fluid">
@@ -272,10 +272,10 @@ class Search extends React.Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}>
-                        Close
+                        Đóng
                     </Button>
                     <Button variant="primary" onClick={this.select}>
-                        Select
+                        Chọn
                     </Button>
                 </Modal.Footer>
             </Modal >
