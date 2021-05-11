@@ -218,6 +218,9 @@ div.short-post.row{
     right: 38px;
     width: 100px;
 }
-.search-container.hide-recommend .bWZouD{
+.search-container.hide-recommend .a{
     display: none;
+}
+.short-info.guest p{
+    line-height: 30px;
 }
