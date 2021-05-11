@@ -1,6 +1,7 @@
 const authRouter = require('./authRoutes')
 const guestRouter = require('./guestRoutes')
 const roomRouter = require('./roomRoutes')
+const orderRouter = require('./orderRoutes')
 const staffRouter = require('./staffRoutes')
 const notFound = require('./404')
 const multer = require("multer");
@@ -20,6 +21,7 @@ module.exports = function (app) {
   app.use('/auth', authRouter)
   app.use('/guest', guestRouter)
   app.use('/room', roomRouter)
+  app.use('/order', orderRouter)
   app.use('/staff', staffRouter)
   app.use(notFound);
 }
