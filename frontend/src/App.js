@@ -9,9 +9,14 @@ import Header from './components/Header/header'
 import Footer from './components/Footer/footer'
 import Page404 from './components/Page404/Page404'
 import Menu from './components/SideMenu/sideMenu'
-import ListRoom from './components/ListRoom/listroom'
 import Page500 from './components/Page500/Page500'
 import jwt_decode from "jwt-decode";
+import QuickBooking from './components/QuickBooking/QuickBooking'
+import DepartureList from './components/DepartureList/DepartureList'
+import DepartureDetail from './components/DepartureDetail/DepartureDetail'
+import ListGuest from './components/Guest/ListGuest'
+import ListRoom from './components/Room/ListRoom'
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -29,6 +34,7 @@ class App extends React.Component {
       token: token,
     }
   }
+
   setToken = (newValue) => {
     this.setState({ 'token': newValue, 'user': jwt_decode(newValue) })
   }
@@ -40,21 +46,25 @@ class App extends React.Component {
         <Header user={this.state.user} setToken={this.setToken} />
         <div className='content-wrapper'>
           <BrowserRouter>
-          <Menu setPage={this.setPage} />
-          <Switch>
-        
-            <Route path="/login" render={(props) => <Login setToken={this.setToken} user={this.state.user} {...props} />} />
-            <Route path="/home" render={(props) => <Home  user={this.state.user} {...props} /> } />
-            <Route path="/room" render={(props) => <ListRoom  user={this.state.user} {...props} /> } />
-            <Route path="/:unknown">
-              <Page404 />
-            </Route>
+            <Menu setPage={this.setPage} />
+            <Switch>
 
-            <Route path="/"  render={(props) => <Home  user={this.state.user} {...props} /> }>
-              <Home />
-            </Route>
-          </Switch>
-        </BrowserRouter>
+              <Route path="/login" render={(props) => <Login setToken={this.setToken} user={this.state.user} {...props} />} />
+              <Route path="/home" render={(props) => <Home user={this.state.user} {...props} />} />
+              <Route path="/room" render={(props) => <ListRoom user={this.state.user} {...props} />} />
+              <Route path="/guest" render={(props) => <ListGuest user={this.state.user} {...props} />} />
+              <Route path="/quickbooking" render={(props) => <QuickBooking user={this.state.user} {...props} />} />
+              <Route path="/checkin" render={(props) => <DepartureList user={this.state.user} {...props} />} />
+              <Route path="/departuredetail/:id" render={(props) => <DepartureDetail user={this.state.user} {...props} />} />
+              <Route path="/:unknown">
+                <Page404 />
+              </Route>
+
+              <Route path="/" render={(props) => <Home user={this.state.user} {...props} />}>
+                <Home />
+              </Route>
+            </Switch>
+          </BrowserRouter>
         </div>
         <Footer user={this.state.user} />
       </div>

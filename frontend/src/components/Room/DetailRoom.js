@@ -26,20 +26,19 @@ class DetailRoom extends React.Component {
         return { modal };
     }
 
-    getRoom = (id) => {
-        api.getRoom(id)
-            .then(res => {
+    openForm = async () => {
+        try {
+            let res = await api.getRoom(this.props.rid)
+            if (res.status === 200) {
                 console.log(res.data.data)
                 this.setState({ data: res.data.data });
-            })
-            .catch(e => {
-                console.log(e);
-            })
-    }
-
-    openForm = () => {
-        this.getRoom(this.props.rid)
-        $('#' + this.state.modal.formId).modal('show');
+                $('#' + this.state.modal.formId).modal('show');
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     closeForm = () => {
@@ -74,17 +73,18 @@ class DetailRoom extends React.Component {
                                         <div className="col form-group">
                                             <label>Loại phòng</label>
                                             <select disabled name="type" value={this.state.data.type} className="form-control">
-                                                <option value="Phòng thường">Phòng thường</option>
-                                                <option value="Phòng đôi">Phòng đôi</option>
-                                                <option value="Phòng đơn">Phòng đơn</option>
+                                                <option value="Standard">Standard</option>
+                                                <option value="Deluxe">Deluxe</option>
+                                                <option value="Superior">Superior</option>
+                                                <option value="Suite">Suite</option>
                                             </select>
                                         </div>
                                         <div className="col form-group">
                                             <label>Trạng thái</label>
                                             <select disabled name="status" value={this.state.data.status} className="form-control">
                                                 <option value="Đang sử dụng">Đang sử dụng</option>
-                                                <option value="Đang trống">Đang trống</option>
-                                                <option value="Đang bảo trì">Đang bảo trì</option>
+                                                <option value="Đã đặt trước">Đã đặt trước</option>
+                                                <option value="Trống">Trống</option>
                                             </select>
                                         </div>
                                     </div>

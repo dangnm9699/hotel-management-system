@@ -3,55 +3,60 @@ import $ from 'jquery';
 import 'bootstrap';
 import api from '../../Api/api';
 
-class DeleteRoom extends React.Component {
+class DeleteStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: {
                 Id: '',
                 name: '',
-                type: '',
-                status: '',
-                maxchild: '',
-                maxadult: '',
-                description: '',
-                price: ''
+                birthday: '',
+                address: '',
+                description: ''
             },
         }
     }
-    openDeleteForm = () => {
-        $('#modalDeleteForm').modal('show');
-        this.getRoom(this.props.rid);
+
+    openDeleteForm = async () => {
+        try {
+            let res = await api.getStaff(this.props.sid);
+            if (res.status === 200) {
+                console.log(res.data.data)
+                this.setState({ data: res.data.data });
+                let data = { ...this.state.data }
+                data.birthday = data.birthday.split("T")[0];
+                this.setState({ data })
+                $('#modalDeleteForm').modal('show');
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     cancelDelete = () => {
         $('#modalDeleteForm').modal('hide');
     }
 
-    applyDelete = () => {
-        api.deleteRoom(this.props.rid)
-            .then(res => {
+    applyDelete = async () => {
+        try {
+            let res = await api.deleteStaff(this.props.sid);
+            if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#modalDeleteForm').modal('hide');
-            })
-            .catch(e => {
-                console.log(e)
-            })
+                await this.props.reloadpage();
+                alert("Xóa nhân viên thành công");
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
 
-    getRoom = (id) => {
-        api.getRoom(id)
-            .then(res => {
-                console.log(res.data.data)
-                this.setState({ data: res.data.data });
-            })
-            .catch(e => {
-                console.log(e);
-            })
-    }
 
     render() {
-        let content = <p>Bạn có chắc chắn muốn xóa phòng <b>{this.state.data.name}</b>, <b>#{this.state.data.Id}</b> không?</p>
         return (
             <div>
                 <button
@@ -63,11 +68,11 @@ class DeleteRoom extends React.Component {
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Xóa phòng</h4>
+                                <h4 className="modal-title">Xóa nhân viên</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
                             <div className="modal-body">
-                                {content}
+                                <p>Bạn có chắc chắn muốn xóa nhân viên <b>{this.state.data.name}</b>, <b>#{this.state.data.Id}</b> không?</p>
                             </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary col-2" onClick={this.cancelDelete}>Hủy</button>
@@ -81,4 +86,4 @@ class DeleteRoom extends React.Component {
     }
 }
 
-export default DeleteRoom;
+export default DeleteStaff;

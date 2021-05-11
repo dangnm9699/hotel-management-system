@@ -2,17 +2,13 @@ import React from 'react';
 import $ from 'jquery';
 import 'bootstrap';
 import api from '../../Api/api';
-import '../../css/listroom.css'
 
-class AddRoom extends React.Component {
+class AddGuest extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: {
-                status: "Đang sử dụng",
-                type: "Phòng thường"
-            },
+            data: {}
         }
     }
 
@@ -49,77 +45,61 @@ class AddRoom extends React.Component {
         $('#modalAddApply').modal('hide');
     }
 
-    acceptApply = () => {
-        api.createRoom(this.state.data)
-            .then(res => {
+    acceptApply = async () => {
+        try {
+            let res = await api.createGuest(this.state.data);
+            if (res.status === 200) {
                 console.log(res.status, res.data)
                 this.setState({ data: {} })
                 $('#modalAddApply').modal('hide');
                 $('#modalAddForm').modal('hide');
-            })
-            .catch(e => {
-                console.log(e);
-            })
+                await this.props.reloadpage();
+                alert("Thêm khách hàng thành công");
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e)
+        }
     }
 
     render() {
-
         return (
             <div className="add-button-container">
                 <button
                     className="btn btn-add btn-success"
                     onClick={this.openForm}
-                ><i className="fas fa-plus" aria-hidden="true"></i>&nbsp; Thêm phòng mới</button>
+                ><i className="fas fa-plus" aria-hidden="true"></i>&nbsp; Thêm khách hàng</button>
 
 
                 <div className="modal fade" id="modalAddForm">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Thêm phòng</h4>
+                                <h4 className="modal-title">Thêm khách hàng</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
                             <div className="modal-body">
                                 <form>
                                     <div className="form-group">
-                                        <label>Tên phòng</label>
-                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" />
-                                    </div>
-                                    <div className="row">
-                                        <div className="col form-group">
-                                            <label>Loại phòng</label>
-                                            <select name="type" onChange={this.myChangeHandler} className="form-control">
-                                                <option value="Phòng thường">Phòng thường</option>
-                                                <option value="Phòng đôi">Phòng đôi</option>
-                                                <option value="Phòng đơn">Phòng đơn</option>
-                                            </select>
-                                        </div>
-                                        <div className="col form-group">
-                                            <label>Trạng thái</label>
-                                            <select name="status" onChange={this.myChangeHandler} className="form-control">
-                                                <option value="Đang sử dụng">Đang sử dụng</option>
-                                                <option value="Đang trống">Đang trống</option>
-                                                <option value="Đang bảo trì">Đang bảo trì</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col form-group">
-                                            <label>Giới hạn người lớn</label>
-                                            <input name="maxadult" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" />
-                                        </div>
-                                        <div className="col form-group">
-                                            <label>Giới hạn trẻ em</label>
-                                            <input name="maxchild" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" />
-                                        </div>
+                                        <label>Tên khách hàng</label>
+                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên khách hàng" required />
                                     </div>
                                     <div className="form-group">
-                                        <label>Giá phòng</label>
-                                        <input name="price" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập giá phòng" />
+                                        <label>Số điện thoại</label>
+                                        <input name="phonenumber" onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại khách hàng" required />
                                     </div>
                                     <div className="form-group">
-                                        <label>Mô tả</label>
-                                        <textarea name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
+                                        <label>Email</label>
+                                        <input name="email" onChange={this.myChangeHandler} type="email" className="form-control" placeholder="Nhập email khách hàng" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Quốc gia</label>
+                                        <input name="country" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập quốc gia khách hàng" required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Số CMND/CCCD</label>
+                                        <input name="idNumber" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập CMND/CCCD khách hàng" required />
                                     </div>
                                 </form>
                             </div>
@@ -138,7 +118,7 @@ class AddRoom extends React.Component {
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
                             <div className="modal-body">
-                                <p>Bạn có chắc chắn muốn thêm phòng này không?</p>
+                                <p>Bạn có chắc chắn muốn thêm khách hàng này không?</p>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={this.discardApply}>Không</button>
@@ -169,4 +149,4 @@ class AddRoom extends React.Component {
     }
 }
 
-export default AddRoom;
+export default AddGuest;

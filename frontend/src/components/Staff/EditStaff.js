@@ -2,7 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import 'bootstrap';
 import api from '../../Api/api';
-class EditRoom extends React.Component {
+
+class EditStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,34 +11,19 @@ class EditRoom extends React.Component {
             data: {
                 Id: '',
                 name: '',
-                type: '',
-                status: '',
-                maxchild: '',
-                maxadult: '',
-                description: '',
-                price: ''
-            },
+                birthday: '',
+                address: '',
+                description: ''
+            }
         }
     }
 
     static getDerivedStateFromProps(props, state) {
         let modal = {}
-        modal.formId = "modalEditForm" + props.rid;
-        modal.applyId = "modalEditApply" + props.rid;
-        modal.cancelId = "modalEditCancel" + props.rid;
+        modal.formId = "modalEditForm" + props.sid;
+        modal.applyId = "modalEditApply" + props.sid;
+        modal.cancelId = "modalEditCancel" + props.sid;
         return { modal };
-    }
-
-    getRoom = (id) => {
-        api.getRoom(id)
-            .then(res => {
-                console.log(res.data.data)
-                let data = res.data.data
-                this.setState({ data });
-            })
-            .catch(e => {
-                console.log(e);
-            })
     }
 
     myChangeHandler = (event) => {
@@ -48,9 +34,22 @@ class EditRoom extends React.Component {
         this.setState({ data })
     }
 
-    openForm = () => {
-        this.getRoom(this.props.rid)
-        $('#' + this.state.modal.formId).modal('show');
+    openForm = async () => {
+        try {
+            let res = await api.getStaff(this.props.sid);
+            if (res.status === 200) {
+                console.log(res.data.data)
+                this.setState({ data: res.data.data });
+                let data = { ...this.state.data }
+                data.birthday = data.birthday.split("T")[0];
+                this.setState({ data })
+                $('#' + this.state.modal.formId).modal('show');
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     openCancel = () => {
@@ -74,16 +73,19 @@ class EditRoom extends React.Component {
         $('#' + this.state.modal.applyId).modal('hide');
     }
 
-    acceptApply = () => {
-        api.updateRoom(this.props.rid, this.state.data)
-            .then(res => {
+    acceptApply = async () => {
+        try {
+            let res = await api.updateStaff(this.props.sid, this.state.data);
+            if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.applyId).modal('hide');
                 $('#' + this.state.modal.formId).modal('hide');
-            })
-            .catch(e => {
-                console.log(e);
-            })
+            } else {
+                alert(res.status);
+            }
+        } catch (e) {
+            alert(e);
+        }
     }
 
     render() {
@@ -107,40 +109,16 @@ class EditRoom extends React.Component {
                             <div className="modal-body">
                                 <form>
                                     <div className="form-group">
-                                        <label>Tên phòng</label>
-                                        <input name="name" value={this.state.data.name} onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" />
-                                    </div>
-                                    <div className="row">
-                                        <div className="col form-group">
-                                            <label>Loại phòng</label>
-                                            <select name="type" value={this.state.data.type} onChange={this.myChangeHandler} className="form-control">
-                                                <option value="Phòng thường">Phòng thường</option>
-                                                <option value="Phòng đôi">Phòng đôi</option>
-                                                <option value="Phòng đơn">Phòng đơn</option>
-                                            </select>
-                                        </div>
-                                        <div className="col form-group">
-                                            <label>Trạng thái</label>
-                                            <select name="status" value={this.state.data.status} onChange={this.myChangeHandler} className="form-control">
-                                                <option value="Đang sử dụng">Đang sử dụng</option>
-                                                <option value="Đang trống">Đang trống</option>
-                                                <option value="Đang bảo trì">Đang bảo trì</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col form-group">
-                                            <label>Giới hạn người lớn</label>
-                                            <input name="maxadult" value={this.state.data.maxadult} onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" />
-                                        </div>
-                                        <div className="col form-group">
-                                            <label>Giới hạn trẻ em</label>
-                                            <input name="maxchild" value={this.state.data.maxchild} onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" />
-                                        </div>
+                                        <label>Tên nhân viên</label>
+                                        <input name="name" type="text" value={this.state.data.name} onChange={this.myChangeHandler} className="form-control" placeholder="Nhập tên nhân viên" />
                                     </div>
                                     <div className="form-group">
-                                        <label>Giá phòng</label>
-                                        <input name="price" value={this.state.data.price} onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập giá phòng" />
+                                        <label>Ngày sinh</label>
+                                        <input name="birthday" type="date" value={this.state.data.birthday} onChange={this.myChangeHandler} className="form-control" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Địa chỉ</label>
+                                        <input name="address" type="text" value={this.state.data.address} onChange={this.myChangeHandler} className="form-control" />
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
@@ -163,7 +141,7 @@ class EditRoom extends React.Component {
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
                             <div className="modal-body">
-                                <p>Bạn có chắc chắn muốn cập nhật phòng này không?</p>
+                                <p>Bạn có chắc chắn muốn cập nhật nhân viên này không?</p>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={this.discardApply}>Không</button>
@@ -194,4 +172,4 @@ class EditRoom extends React.Component {
     }
 }
 
-export default EditRoom;
+export default EditStaff;
