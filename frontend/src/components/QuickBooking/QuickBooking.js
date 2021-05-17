@@ -6,26 +6,60 @@ import TotalAndAmount from './TotalAndAmount'
 import api from '../../Api/api';
 import { Modal } from 'react-bootstrap'
 import { Redirect } from "react-router-dom"
+import QuickBookingContext from "../../context/QuickBookingContext"
 
 class QuickBooking extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            day: 1,
-            bookingType: "confirm",
-            checkInTime: this.getTimeString(new Date()),
-            checkOutTime: this.getTimeString(new Date(new Date().getTime() + 86400000)),
-            roomList: [],
-            guestInformation: {
-                type: "null"
-            },
-            total: 0,
-            amountPaid: 0,
             loading: false,
             notificationShow: false,
             message: "",
             reload: false,
+            context: {
+                bookingType: "confirm",
+                checkInTime: this.getTimeString(new Date()),
+                checkOutTime: this.getTimeString(new Date(new Date().getTime() + 86400000)),
+                guestInformation: {
+                    type: "null"
+                },
+                amountPaid: 0,
+
+                amountRoom: 1,
+                roomType: "Standard",
+                listRoomSelected: [{
+                    adult: 0,
+                    children: 0,
+                    room: {
+                        Id: -1,
+                        name: "",
+                        maxchild: 0,
+                        maxadult: 0,
+                        price: 0,
+                    },
+                    index: 0,
+                }],
+                listRoomCandidate: [{
+                    Id: -1,
+                    name: "",
+                    maxchild: 0,
+                    maxadult: 0,
+                    price: 0,
+                }],
+                loadingRoom: true,
+
+                getDay: this.getDay,
+                getTotal: this.getTotal,
+                booking: this.booking,
+                setContext: this.setContext,
+            }
         }
+    }
+
+    setContext = (prop, value) => {
+        let c = this.state.context;
+        c[prop] = value;
+        this.setState({ context: c })
     }
 
     getTimeString = (d) => {
@@ -38,51 +72,27 @@ class QuickBooking extends React.Component {
         }).replace(" ", "T")
     }
 
-    changeCheckInHandler = (checkInTime) => {
-        //console.log(checkInTime)
-        this.setState({ checkInTime: checkInTime })
-    }
-
-    changeCheckOutHandler = (checkOutTime) => {
-        this.setState({ checkOutTime: checkOutTime })
-    }
-
-    bookingTypeChangeHandler = (bookingType) => {
-        this.setState({ bookingType: bookingType })
-    }
-
-    changeRoomInformation = (roomList) => {
-        // console.log(roomList)
-        this.setState({ roomList: roomList })
-        this.updateTotal(this.state.day)
-    }
-
-    changeGuestInformation = (guest) => {
-        //console.log(this.state)
-        this.setState({ guestInformation: guest })
-    }
-
-    changeDayHandler = (day) => {
-        this.setState({ day: day })
-        this.updateTotal(day)
-    }
-
     changeAmountPaid = (amount) => {
         this.setState({ amountPaid: amount })
     }
 
-    updateTotal = (day) => {
-        let roomList = this.state.roomList
+    getDay = () => {
+        let d1 = new Date(this.state.context.checkInTime)
+        let d2 = new Date(this.state.context.checkOutTime)
+        return Math.floor((d2 - d1 - 1) / (1000 * 60 * 60 * 24)) + 1
+    }
+
+    getTotal = () => {
+        let roomList = this.state.context.listRoomSelected
         let total = 0;
         for (let i = 0; i < roomList.length; i++) {
-            total += roomList[i].room.price * day
+            total += roomList[i].room.price * this.getDay()
         }
-        //console.log(roomList, this.state.day)
-        this.setState({ total: total })
+        return total
     }
 
     booking = async () => {
-        if (this.state.guestInformation.type === "null") {
+        if (this.state.context.guestInformation.type === "null") {
             this.setState({ notificationShow: true, message: "Vui lòng nhập thông tin khách hàng" })
             return
         }
@@ -90,17 +100,17 @@ class QuickBooking extends React.Component {
         this.setState({ loading: true })
         try {
             let data = {
-                checkinTime: this.state.checkInTime,
-                checkoutTime: this.state.checkOutTime,
-                numday: this.state.day,
-                guestType: this.state.guestInformation.type,
-                guest: this.state.guestInformation.guest,
-                type: this.state.bookingType,
+                checkinTime: this.state.context.checkInTime,
+                checkoutTime: this.state.context.checkOutTime,
+                numday: this.state.context.getDay(),
+                guestType: this.state.context.guestInformation.type,
+                guest: this.state.context.guestInformation.guest,
+                type: this.state.context.bookingType,
                 rooms: [],
-                cost: this.state.total,
-                paid: this.state.amountPaid
+                cost: this.state.context.getTotal(),
+                paid: this.state.context.amountPaid
             }
-            let roomList = this.state.roomList
+            let roomList = this.state.context.listRoomSelected
             for (let i = 0; i < roomList.length; i++) {
                 data.rooms.push({
                     roomId: roomList[i].room.Id,
@@ -116,9 +126,9 @@ class QuickBooking extends React.Component {
             let res = await api.quickbooking(data)
             if (res.status === 200) {
                 this.setState({ notificationShow: true, message: "Đặt phòng thành công" })
+                this.setState({ reload: true })
             } else {
                 this.setState({ notificationShow: true, message: res.data.err })
-                this.setState({ reload: true })
             }
             this.setState({ loading: false })
 
@@ -138,28 +148,20 @@ class QuickBooking extends React.Component {
             return (<Redirect to='/quickbooking' />)
         }
         return (
-            <div className="container-fluid">
-                <Loading show={this.state.loading} />
-                <Notification show={this.state.notificationShow} hideNotification={this.hideNotification} message={this.state.message} />
-                <hr />
-                <CheckInAndCheckOut
-                    checkInTime={this.state.checkInTime}
-                    checkOutTime={this.state.checkOutTime}
-                    changeCheckIn={this.changeCheckInHandler}
-                    changeCheckOut={this.changeCheckOutHandler}
-                    updateDay={this.changeDayHandler}
-                />
-                <hr />
-                <RoomInfomation
-                    day={this.state.day}
-                    changeRoomInformation={this.changeRoomInformation}
-                    changeBookingType={this.bookingTypeChangeHandler}
-                />
-                <hr />
-                <GuestInformation changeGuestInformation={this.changeGuestInformation} />
-                <hr />
-                <TotalAndAmount total={this.state.total} booking={this.booking} changeAmountPaid={this.changeAmountPaid} />
-            </div>
+            <QuickBookingContext.Provider value={this.state.context}>
+                <div className="container-fluid">
+                    <Loading show={this.state.loading} />
+                    <Notification show={this.state.notificationShow} hideNotification={this.hideNotification} message={this.state.message} />
+                    <hr />
+                    <CheckInAndCheckOut />
+                    <hr />
+                    <RoomInfomation />
+                    <hr />
+                    <GuestInformation />
+                    <hr />
+                    <TotalAndAmount />
+                </div>
+            </QuickBookingContext.Provider>
         )
     }
 }
@@ -173,7 +175,7 @@ class Loading extends React.Component {
     render() {
 
         return (
-            <Modal show={this.props.show}>
+            <Modal show={this.props.show} backdrop="static">
                 <Modal.Body >
                     <div className="d-flex justify-content-center text-primary">
                         <div className="spinner-border" role="status">

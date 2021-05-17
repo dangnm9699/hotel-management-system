@@ -1,70 +1,65 @@
 import React from 'react';
 import api from '../../Api/api';
+import QuickBookingContext from '../../context/QuickBookingContext'
 
 class RoomInfomation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            buttonColor: {
+        }
+    }
+
+    getColor() {
+        if (this.context.bookingType === "confirm") {
+            return {
                 buton1: "btn-primary",
                 buton2: "btn-secondary",
-            },
-            amountRoom: 1,
-            roomType: "Standard",
-            listRoomSelected: [{
-                adult: 0,
-                children: 0,
-                room: {
+            }
+        }
+        return {
+            buton1: "btn-secondary",
+            buton2: "btn-primary",
+        }
+    }
+
+    async componentDidMount() {
+        this.context.setContext('loadingRoom', true)
+        try {
+            let res = await api.getIdleRoomByType(this.context.roomType, this.context.checkInTime, this.context.checkOutTime)
+            if (res.data.length) {
+                for (let i = 0; i < this.context.listRoomSelected.length; i++) {
+                    this.context.listRoomSelected[i] = {
+                        room: res.data[0],
+                        adult: 0,
+                        children: 0,
+                        index: 0,
+                    }
+                }
+                this.context.setContext('listRoomCandidate', res.data)
+            } else {
+                for (let i = 0; i < this.context.listRoomSelected.length; i++) {
+                    this.state.listRoomSelected[i] = {
+                        room: {
+                            Id: -1,
+                            name: "",
+                            maxchild: 0,
+                            maxadult: 0,
+                            price: 0,
+                        },
+                        adult: 0,
+                        children: 0,
+                        index: 0,
+                    }
+                }
+                this.context.setContext('listRoomCandidate', [{
                     Id: -1,
                     name: "",
                     maxchild: 0,
                     maxadult: 0,
                     price: 0,
-                },
-                index: 0,
-            }],
-            listRoom: [{
-                Id: -1,
-                name: "",
-                maxchild: 0,
-                maxadult: 0,
-                price: 0,
-            }],
-            loading: true
-        }
-    }
-
-    async componentDidMount() {
-        this.setState({ loading: true })
-        try {
-            let res = await api.getIdleRoomByType(this.state.roomType)
-            if (res.data.length) {
-                for (let i = 0; i < this.state.listRoomSelected.length; i++) {
-                    this.state.listRoomSelected[i].room = res.data[0]
-                }
-                this.setState({ listRoom: res.data })
-            } else {
-                for (let i = 0; i < this.state.listRoomSelected.length; i++) {
-                    this.state.listRoomSelected[i].room = {
-                        Id: -1,
-                        name: "",
-                        maxchild: 0,
-                        maxadult: 0,
-                        price: 0,
-                    }
-                }
-                this.setState({
-                    listRoom: [{
-                        Id: -1,
-                        name: "",
-                        maxchild: 0,
-                        maxadult: 0,
-                        price: 0,
-                    }]
-                })
+                }])
             }
-            this.props.changeRoomInformation(this.state.listRoomSelected)
-            this.setState({ loading: false })
+            this.context.setContext('loadingRoom', false)
             //console.log(res.data)
         } catch (e) {
             console.log(e)
@@ -72,71 +67,67 @@ class RoomInfomation extends React.Component {
     }
 
     changeTypeConfirm = () => {
-        this.props.changeBookingType("confirm")
-        this.setState({
-            buttonColor: {
-                buton1: "btn-primary",
-                buton2: "btn-secondary",
-            }
-        })
+        this.context.setContext('bookingType', "confirm")
     }
+
     changeTypeHold = () => {
-        this.props.changeBookingType("hold")
-        this.setState({
-            buttonColor: {
-                buton1: "btn-secondary",
-                buton2: "btn-primary",
-            }
-        })
+        this.context.setContext('bookingType', "hold")
     }
 
     changeAmountRoomHandler = (e) => {
-        this.setState({ amountRoom: e.target.value })
-        let listRoom = this.state.listRoomSelected
+        this.context.setContext('amountRoom', e.target.value)
+        let listRoom = this.context.listRoomSelected
         while (e.target.value > listRoom.length) {
             listRoom.push({
                 adult: 0,
                 children: 0,
-                room: this.state.listRoom[0],
+                room: this.context.listRoomCandidate[0],
                 index: 0,
             })
         }
         listRoom.length = e.target.value
-        this.props.changeRoomInformation(listRoom)
-        this.setState({ listRoomSelected: listRoom })
+        this.context.setContext('listRoomSelected', listRoom)
     }
 
     changeRoomType = async (event) => {
-        //console.log(event.target.value)
-        this.setState({ roomType: event.target.value, loading: true });
+        this.context.setContext('roomType', event.target.value)
+        this.context.setContext('loadingRoom', true)
         try {
-            let res = await api.getIdleRoomByType(event.target.value)
+            let res = await api.getIdleRoomByType(event.target.value, this.context.checkInTime, this.context.checkOutTime)
             if (res.data.length) {
-                for (let i = 0; i < this.state.listRoomSelected.length; i++) {
-                    this.state.listRoomSelected[i].room = res.data[0]
-                }
-                this.setState({ listRoom: res.data })
-            } else {
-                for (let i = 0; i < this.state.listRoomSelected.length; i++) {
-                    this.state.listRoomSelected[i].room = {
-                        Id: -1,
-                        name: "",
-                        maxchild: 0,
-                        maxadult: 0,
+                for (let i = 0; i < this.context.listRoomSelected.length; i++) {
+                    this.context.listRoomSelected[i] = {
+                        room: res.data[0],
+                        index: 0,
+                        adult: 0,
+                        children: 0,
                     }
                 }
-                this.setState({
-                    listRoom: [{
-                        Id: -1,
-                        name: "",
-                        maxchild: 0,
-                        maxadult: 0,
-                    }]
-                })
+                this.context.setContext('listRoomCandidate', res.data)
+            } else {
+                for (let i = 0; i < this.context.listRoomSelected.length; i++) {
+                    this.state.listRoomSelected[i] = {
+                        room: {
+                            Id: -1,
+                            name: "",
+                            maxchild: 0,
+                            maxadult: 0,
+                            price: 0,
+                        },
+                        adult: 0,
+                        children: 0,
+                        index: 0,
+                    }
+                }
+                this.context.setContext('listRoomCandidate', [{
+                    Id: -1,
+                    name: "",
+                    maxchild: 0,
+                    maxadult: 0,
+                    price: 0,
+                }])
             }
-            this.props.changeRoomInformation(this.state.listRoomSelected)
-            this.setState({ loading: false })
-
+            this.context.setContext('loadingRoom', false)
         } catch (e) {
             console.log(e)
         }
@@ -146,21 +137,20 @@ class RoomInfomation extends React.Component {
         let i = parseInt(event.target.getAttribute('index'))
         let value = event.target.value
         let name = event.target.name
-        let listRoomSelected = this.state.listRoomSelected
+        let listRoomSelected = this.context.listRoomSelected
         if (name === 'index') {
             value = parseInt(value)
             listRoomSelected[i]["children"] = 0;
             listRoomSelected[i]["adult"] = 0;
         }
         listRoomSelected[i][name] = value
-        listRoomSelected[i]["room"] = this.state.listRoom[listRoomSelected[i].index]
-        this.props.changeRoomInformation(listRoomSelected)
-        this.setState({ listRoomSelected: listRoomSelected })
+        listRoomSelected[i]["room"] = this.context.listRoomCandidate[listRoomSelected[i].index]
+        this.context.setContext('listRoomSelected', listRoomSelected)
     }
 
     getNameOptionList = () => {
         let listOption = [];
-        let availableRoom = this.state.listRoom
+        let availableRoom = this.context.listRoomCandidate
         for (let i = 0; i < availableRoom.length; i++) {
             listOption.push(<option key={i} value={i}>{availableRoom[i].name}</option>)
         }
@@ -169,7 +159,7 @@ class RoomInfomation extends React.Component {
 
     getAdultOptionList = (index) => {
         let listOption = [];
-        let room = this.state.listRoom[index];
+        let room = this.context.listRoomCandidate[index];
         for (let i = 0; i <= room.maxadult; i++) {
             listOption.push(<option key={i} value={i}>{i}</option>)
         }
@@ -178,7 +168,7 @@ class RoomInfomation extends React.Component {
 
     getChildrenOptionList = (index) => {
         let listOption = [];
-        let room = this.state.listRoom[index];
+        let room = this.context.listRoomCandidate[index];
         for (let i = 0; i <= room.maxchild; i++) {
             listOption.push(<option key={i} value={i}>{i}</option>)
         }
@@ -188,14 +178,14 @@ class RoomInfomation extends React.Component {
     render() {
         //console.log(this.state.listRoomSelected)
         let listRoom = [];
-        if (this.state.loading) {
+        if (this.context.loadingRoom) {
             listRoom = <div className="d-flex justify-content-center text-primary">
                 <div className="spinner-border" role="status">
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
         } else {
-            for (let i = 0; i < this.state.amountRoom; i++) {
+            for (let i = 0; i < this.context.amountRoom; i++) {
                 //console.log(this.state.listRoomSelected[i].room.price, this.props.day)
                 listRoom.push(
                     <div className="row" key={i}>
@@ -210,23 +200,23 @@ class RoomInfomation extends React.Component {
                         <div className="col">
                             <div className="form-group">
                                 <label >Số người lớn</label>
-                                <select className="form-control" index={i} name="adult" onChange={this.changeRoomInformation} value={this.state.listRoomSelected[i].adult}>
-                                    {this.getAdultOptionList(this.state.listRoomSelected[i].index)}
+                                <select className="form-control" index={i} name="adult" onChange={this.changeRoomInformation} value={this.context.listRoomSelected[i].adult}>
+                                    {this.getAdultOptionList(this.context.listRoomSelected[i].index)}
                                 </select>
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
                                 <label >Số trẻ em</label>
-                                <select className="form-control" index={i} name="children" onChange={this.changeRoomInformation} value={this.state.listRoomSelected[i].children}>
-                                    {this.getChildrenOptionList(this.state.listRoomSelected[i].index)}
+                                <select className="form-control" index={i} name="children" onChange={this.changeRoomInformation} value={this.context.listRoomSelected[i].children}>
+                                    {this.getChildrenOptionList(this.context.listRoomSelected[i].index)}
                                 </select>
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
                                 <label >Đơn giá</label>
-                                <input type="text" className="form-control" value={this.state.listRoomSelected[i].room.price * this.props.day} readOnly />
+                                <input type="text" className="form-control" value={this.context.listRoomSelected[i].room.price * this.context.getDay()} readOnly />
                             </div>
                         </div>
                     </div>
@@ -241,10 +231,10 @@ class RoomInfomation extends React.Component {
                         <div className="col-6">
                             <div className="h2">Kiểu đặt phòng</div>
                             <div className="btn-group btn-group-toggle w-50" data-toggle="buttons">
-                                <label onClick={this.changeTypeConfirm} className={this.state.buttonColor.buton1 + " btn w-50"}>
+                                <label onClick={this.changeTypeConfirm} className={this.getColor().buton1 + " btn w-50"}>
                                     <input type="radio" /> Xác nhận
                         </label>
-                                <label onClick={this.changeTypeHold} className={this.state.buttonColor.buton2 + " btn w-50"}>
+                                <label onClick={this.changeTypeHold} className={this.getColor().buton2 + " btn w-50"}>
                                     <input type="radio" /> Giữ phòng
                         </label>
                             </div>
@@ -252,7 +242,7 @@ class RoomInfomation extends React.Component {
                         <div className="col-6 d-flex justify-content-center">
                             <div className="w-50">
                                 <div className="h2">Số lượng phòng</div>
-                                <input onChange={(e) => this.changeAmountRoomHandler(e)} type="number" className="form-control w-50" value={this.state.amountRoom} min="1" max="50" />
+                                <input onChange={(e) => this.changeAmountRoomHandler(e)} type="number" className="form-control w-50" value={this.context.amountRoom} min="1" max="50" />
                             </div>
                         </div>
                     </div>
@@ -289,5 +279,7 @@ class RoomInfomation extends React.Component {
         )
     }
 }
+
+RoomInfomation.contextType = QuickBookingContext
 
 export default RoomInfomation
