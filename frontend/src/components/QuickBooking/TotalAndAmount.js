@@ -1,18 +1,17 @@
 import React from 'react';
 import CurrencyInput from 'react-currency-input-field';
+import QuickBookingContext from '../../context/QuickBookingContext'
 
 class TotalAndAmount extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            amountPaid: 0,
         }
     }
 
     changeAmountPaid = (value) => {
         // let value = e.target.value
-        this.props.changeAmountPaid(parseInt(value))
-        this.setState({ amountPaid: value })
+        this.context.setContext('amountPaid', parseInt(value))
     }
     formatMoney = (number) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
@@ -29,7 +28,7 @@ class TotalAndAmount extends React.Component {
                     </div>
                     <div className="row mt-2">
                         <div className="col">
-                            {this.formatMoney(this.props.total)}
+                            {this.formatMoney(this.context.getTotal())}
                         </div>
                     </div>
                 </div>
@@ -58,12 +57,14 @@ class TotalAndAmount extends React.Component {
 
                 </div>
                 <div className="col text-center mt-4">
-                    <button className="btn btn-primary w-50" onClick={this.props.booking}>Đặt phòng ngay</button>
+                    <button className="btn btn-primary w-50" onClick={this.context.booking}>Đặt phòng ngay</button>
                 </div>
 
             </div>
         )
     }
 }
+
+TotalAndAmount.contextType = QuickBookingContext
 
 export default TotalAndAmount

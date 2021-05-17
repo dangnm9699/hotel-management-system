@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap'
 import api from '../../Api/api';
 import './../../css/searchguestmodal.css'
+import QuickBookingContext from '../../context/QuickBookingContext'
 class GuestInformation extends React.Component {
     constructor(props) {
         super(props)
@@ -33,7 +34,7 @@ class GuestInformation extends React.Component {
             },
             type: "new",
         })
-        this.props.changeGuestInformation({
+        this.context.setContext('guestInformation', {
             type: "new",
             guest: this.state.guestInformationNew,
         })
@@ -47,13 +48,13 @@ class GuestInformation extends React.Component {
             },
             type: "return",
         })
-        if (this.state.selectedGuest != -1) {
-            this.props.changeGuestInformation({
+        if (this.state.selectedGuest !== -1) {
+            this.context.setContext('guestInformation', {
                 type: "return",
                 guest: this.state.guestList[this.state.selectedGuest]
             })
         } else {
-            this.props.changeGuestInformation({
+            this.context.setContext('guestInformation', {
                 type: "null",
                 guest: {},
             })
@@ -66,7 +67,7 @@ class GuestInformation extends React.Component {
         let guestInformationNew = this.state.guestInformationNew;
         guestInformationNew[nam] = val;
         //console.log(guestInformationNew)
-        this.props.changeGuestInformation({
+        this.context.setContext('guestInformation', {
             type: "new",
             guest: this.state.guestInformationNew
         })
@@ -94,13 +95,13 @@ class GuestInformation extends React.Component {
     }
 
     setSelectedGuest = (index) => {
-        if (index != -1) {
-            this.props.changeGuestInformation({
+        if (index !== -1) {
+            this.context.setContext('guestInformation', {
                 type: "return",
                 guest: this.state.guestList[index]
             })
         } else {
-            this.props.changeGuestInformation({
+            this.context.setContext('guestInformation', {
                 type: "null",
                 guest: {},
             })
@@ -255,15 +256,15 @@ class Search extends React.Component {
             }
         }
         return (
-            <Modal show={this.props.show} onHide={this.props.handleClose} size="lg" scrollable={true}>
+            <Modal show={this.props.show} onHide={this.props.handleClose} size="lg" scrollable={true} backdrop="static">
                 <Modal.Header closeButton>
-                    <Modal.Title>Kết quả tìm kiếm</Modal.Title>
+                    <Modal.Title>Search Results</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <div className="row">
-                        <div className="col">Số điện thoại</div>
-                        <div className="col">Tên khách hàng</div>
-                        <div className="col">Quốc tịch</div>
+                        <div className="col">Phone Number</div>
+                        <div className="col">Name</div>
+                        <div className="col">Country</div>
                     </div>
                     <hr />
                     <div className="container-fluid">
@@ -272,15 +273,17 @@ class Search extends React.Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}>
-                        Đóng
+                        Close
                     </Button>
                     <Button variant="primary" onClick={this.select}>
-                        Chọn
+                        Select
                     </Button>
                 </Modal.Footer>
             </Modal >
         )
     }
 }
+
+GuestInformation.contextType = QuickBookingContext
 
 export default GuestInformation
