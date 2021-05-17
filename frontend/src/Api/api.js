@@ -99,6 +99,15 @@ const api = {
     searchListGuest: (page, key) => {
         return axios.get(`${baseUrl}/guest/search?key=${key}&page=${page}&perpage=8`);
     },
+    getliststaff: (page) => {
+        return axios.get(`${baseUrl}/staff?page=${page}&perpage=8`);
+    },
+    searchliststaff: (page, key) => {
+        return axios.get(`${baseUrl}/staff/search?key=${key}&page=${page}&perpage=8`);
+    },
+    searchStaffName: (page, key) => {
+        return axios.get(`${baseUrl}/staff/searchname?key=${key}&page=${page}&perpage=8`);
+    },
     createStaff: (data) => {
         return axios.post(`${baseUrl}/staff`, data);
     },
@@ -114,8 +123,8 @@ const api = {
     searchRoomName: (page, key) => {
         return axios.get(`${baseUrl}/room/searchname?key=${key}&page=${page}&perpage=8`);
     },
-    getIdleRoomByType: (type) => {
-        return axios.get(`${baseUrl}/room/getidleroombytype?type=${type}`);
+    getIdleRoomByType: (type, checkintime, checkouttime) => {
+        return axios.get(`${baseUrl}/room/getidleroombytype?type=${type}&checkintime=${checkintime}&checkouttime=${checkouttime}`);
     },
     searchGuestByPhoneNumber: (key) => {
         return axios.get(`${baseUrl}/guest/searchbyphone?key=${key}&page=1`);
@@ -125,6 +134,36 @@ const api = {
     },
     quickbooking: (data) => {
         return axios.post(`${baseUrl}/order`, data)
+    },
+    getOrderArrivalToday: (page) => {
+        return axios.get(`${baseUrl}/order/arrival/day?page=${page}&perpage=8`)
+    },
+    getOrderArrivalTomorrow: (page) => {
+        return axios.get(`${baseUrl}/order/arrival/tomorrow?page=${page}&perpage=8`)
+    },
+    getOrderArrivalThisWeek: (page) => {
+        return axios.get(`${baseUrl}/order/arrival/week?page=${page}&perpage=8`)
+    },
+    getOrder: (id) => {
+        return axios.get(`${baseUrl}/order/arrival/${id}`)
+    },
+    checkin: (id) => {
+        return axios.get(`${baseUrl}/order/checkin/${id}`)
+    },
+    getOrderDepartureToday: (page) => {
+        return axios.get(`${baseUrl}/order/departure/day?page=${page}&perpage=8`)
+    },
+    getOrderDepartureTomorrow: (page) => {
+        return axios.get(`${baseUrl}/order/departure/tomorrow?page=${page}&perpage=8`)
+    },
+    getOrderDepartureThisWeek: (page) => {
+        return axios.get(`${baseUrl}/order/departure/week?page=${page}&perpage=8`)
+    },
+    checkout: (id) => {
+        return axios.get(`${baseUrl}/order/checkout/${id}`)
+    },
+    getOrderInHouse: (page) => {
+        return axios.get(`${baseUrl}/order/inhouse?page=${page}&perpage=8`)
     }
 }
 
