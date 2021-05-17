@@ -138,7 +138,10 @@ exports.searchRoomName = async function (req, res) {
 exports.getIdleRoomByType = async function (req, res) {
     try {
         let type = req.query.type
-        let result = await Room.getIdleRoomByType(type)
+        let checkinTime = req.query.checkintime
+        let checkoutTime = req.query.checkouttime
+        //console.log(checkoutTime, checkinTime, req.query)
+        let result = await Room.getIdleRoomByType(type, checkinTime, checkoutTime)
         result.success = true
         res.json(result)
     } catch (err) {

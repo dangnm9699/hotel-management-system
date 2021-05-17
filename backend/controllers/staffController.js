@@ -100,3 +100,35 @@ exports.deleteStaff = async function (req, res) {
         })
     }
 }
+exports.searchStaff = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Staff.searchStaff(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.searchStaffName = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Staff.searchStaffName(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}

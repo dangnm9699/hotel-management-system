@@ -108,11 +108,86 @@ exports.getOrder = async function (req, res) {
 
 exports.checkIn = async function (req, res) {
     try {
-        await Order.getOrder(req.params.id)
+        await Order.checkIn(req.params.id)
         res.json({
             success: true,
             data: req.params.id,
         })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.checkOut = async function (req, res) {
+    try {
+        await Order.checkOut(req.params.id)
+        res.json({
+            success: true,
+            data: req.params.id,
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.getListOrderToCheckOutByDay = async function (req, res) {
+    try {
+        let page = parseInt(req.query.page, 10) || 1
+        let perpage = parseInt(req.query.perpage) || 1000
+        let result = await Order.getListOrderToCheckOutByDay(page, perpage)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.getListOrderToCheckOutByTomorrow = async function (req, res) {
+    try {
+        let page = parseInt(req.query.page, 10) || 1
+        let perpage = parseInt(req.query.perpage) || 1000
+        let result = await Order.getListOrderToCheckOutByTomorrow(page, perpage)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.getListOrderToCheckOutByWeek = async function (req, res) {
+    try {
+        let page = parseInt(req.query.page, 10) || 1
+        let perpage = parseInt(req.query.perpage) || 1000
+        let result = await Order.getListOrderToCheckOutByWeek(page, perpage)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.getListInHouse = async function (req, res) {
+    try {
+        let page = parseInt(req.query.page, 10) || 1
+        let perpage = parseInt(req.query.perpage) || 1000
+        let result = await Order.getListInHouse(page, perpage)
+        result.success = true
+        res.json(result)
     } catch (err) {
         console.log(err)
         res.status(500).json({
