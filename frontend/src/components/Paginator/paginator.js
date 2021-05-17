@@ -60,10 +60,10 @@ export default class Paginator extends React.Component {
                         {next}
                         {doubleNext}
                         <li className="page-item" >
-                            <a className={'page-link ' + ((currentPage === lastPage) ? 'disable' : '')} value={currentPage + 1} onClick={e => this.changePage(e)}  > &#10095;</a>
+                            <a className={'page-link ' + ((currentPage >= lastPage) ? 'disable' : '')} value={currentPage + 1} onClick={e => this.changePage(e)}  > &#10095;</a>
                         </li>
                         <li className="page-item">
-                            <a className={'page-link ' + ((currentPage === lastPage) ? 'disable' : '')} value={lastPage} onClick={e => this.changePage(e)}  >&#10095;&#10095;</a>
+                            <a className={'page-link ' + ((currentPage >= lastPage) ? 'disable' : '')} value={lastPage} onClick={e => this.changePage(e)}  >&#10095;&#10095;</a>
                         </li>
                     </ul >
                 </nav >
