@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import '../../css/login.css';
 import api from '../../Api/api'
@@ -22,16 +22,16 @@ export default class Login extends React.Component {
   render() {
     var failedLogIn = ''
     var successRegister = ''
-    if (this.props.user != null){
+    if (this.props.user != null) {
       return <Redirect to="/"></Redirect>
     }
     if (this.state.serverError === true) {
       return <Page500 />
     }
 
-    if (this.state.successLogin === true){
+    if (this.state.successLogin === true) {
       let returnPage = '/home'
-      if (this.props.location.state && this.props.location.state.from){
+      if (this.props.location.state && this.props.location.state.from) {
         returnPage = this.location.state.from
       }
       return <Redirect to={returnPage}></Redirect>
@@ -97,13 +97,13 @@ export default class Login extends React.Component {
     try {
       var response = await api.login(data);
       if (response.status === 200) {
-        this.setState({'successLogin': true})
+        this.setState({ 'successLogin': true })
         localStorage.setItem('accessToken', response.data.accessToken)
         await this.props.setToken(response.data.accessToken)
         return
       }
-      if (response.status === 403){
-        this.setState({'logInFailed': true})
+      if (response.status === 401) {
+        this.setState({ 'logInFailed': true })
       }
     } catch (err) {
       console.log(err)

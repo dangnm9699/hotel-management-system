@@ -6,6 +6,11 @@
     flex-direction: column;
     min-width: 1120px;
 }
+
+.content-wrapper{
+    display: flex;
+    position: relative;
+}
 .search-bar{
     width: 96%;
     height: 120px;
@@ -42,53 +47,6 @@
     margin-right: 16px;
     padding-top: 4px;
     padding-bottom: 4px;
-}
-.btn-detail {
-    border: none;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 24px;
-    cursor: pointer;
-    font-size: 22px;
-}
-  
-.btn-detail span {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    transition: 0.5s;
-}
-  
-.btn-detail span:after {
-    content: '\00bb';
-    position: absolute;
-    opacity: 0;
-    top: -1;
-    right: -10px;
-    transition: 0.5s;
-}
-  
-.btn-detail:hover span {
-    padding-right: 25px;
-}
-.btn-detail:hover{
-      background: #ff9800;
-      border: solid 1px #ff9800;
-      color: white;
-}
-  
-.btn-detail:hover span:after {
-    opacity: 1;
-    right: 0;
-}
-.btn-detail{
-    background: #3F51B5;
-    border: solid 1px #3F51B5;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    font-size: 16px;
 }
 
 .post-list{
