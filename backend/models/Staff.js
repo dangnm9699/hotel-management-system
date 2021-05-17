@@ -5,7 +5,11 @@ exports.createStaff = async function (data) {
         name: data.name,
         birthday: data.birthday,
         address: data.address,
-        description: data.description
+        description: data.description,
+        idNumber: data.idNumber,
+        phonenumber: data.phonenumber,
+        role: data.role,
+        status: data.status
     })
 }
 
@@ -14,7 +18,7 @@ exports.getStaff = async function (id) {
 }
 
 exports.getStaffList = async function (page, perpage) {
-    return knex('NV').paginate({ perPage: perpage, currentPage: page, isLengthAware: true });
+    return knex('NV').whereNot('status', 'đã xoá').paginate({ perPage: perpage, currentPage: page, isLengthAware: true });
 }
 
 exports.updateStaff = async function (id, data) {
@@ -22,9 +26,17 @@ exports.updateStaff = async function (id, data) {
 }
 
 exports.deleteStaff = async function (id) {
-    return knex('NV').where('Id', id).del()
+    return knex('NV').where('Id', id).update({'status': 'đã xoá'})
 }
 
 exports.dropTable = async function () {
     return knex.schema.dropTable('NV');
 };
+
+exports.searchStaffName = async function (page, perpage, key) {
+    return knex('NV').where('name', 'like', `%${key}%`).whereNot('status', 'đã xoá').select('name').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
+exports.searchStaff = async function (page, perpage, key) {
+    return knex('NV').where('name', 'like', `%${key}%`).whereNot('status', 'đã xoá').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
