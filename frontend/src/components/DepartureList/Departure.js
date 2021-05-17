@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 
 class Departure extends React.Component {
@@ -16,8 +17,32 @@ class Departure extends React.Component {
         }
     }
 
-    componentDidMount() {
-
+    static getDerivedStateFromProps(props, state) {
+        console.log(props)
+        let totalChildCount = (room) => {
+            let total = 0;
+            for (let i = 0; i < room.length; i++) {
+                total += room[i].numChild
+            }
+            return total
+        }
+        let totalAdultCount = (room) => {
+            let total = 0;
+            for (let i = 0; i < room.length; i++) {
+                total += room[i].numAdult
+            }
+            return total
+        }
+        return {
+            name: props.Khach.name,
+            resid: props.Khach.Id,
+            folio: props.order.Id,
+            nightStay: props.order.numday,
+            arrivingAt: new Date(props.order.checkinTime),
+            leavingAt: new Date(props.order.checkoutTime),
+            adult: totalAdultCount(props.rooms),
+            children: totalChildCount(props.rooms)
+        }
     }
 
     render() {
@@ -26,7 +51,7 @@ class Departure extends React.Component {
                 <div className="col-3">
                     <div className="row align-items-center justify-content-center h-50">
                         <div className="col-8  border text-center d-flex flex-column justify-content-center h-75">
-                            {this.state.leavingAt.getDate()}
+                            {this.state.arrivingAt.getDate()}
                         </div>
                     </div>
                     <div className="row align-items-center justify-content-center h-50">
@@ -40,11 +65,11 @@ class Departure extends React.Component {
                         {this.state.name}
                     </div>
                     <div className="row">
-                        <div class="col font-weight-bold">
+                        <div className="col font-weight-bold">
                             <div> ResID</div>
                             <div>{this.state.resid}</div>
                         </div>
-                        <div class="col font-weight-bold">
+                        <div className="col font-weight-bold">
                             <div> Folio</div>
                             <div>{this.state.folio}</div>
                         </div>
@@ -61,9 +86,10 @@ class Departure extends React.Component {
                     </div>
                 </div>
                 <div className="col-3 d-flex justify-content-center align-items-center">
-                    <a href="javascript:void(0)">
-                        Click for more detail
-                    </a>
+                    <Link to={{
+                        pathname: '/departuredetail/' + this.props.order.Id,
+                        state: { from: this.props.from }
+                    }}>Click for more detail</Link>
                 </div>
             </div>
         )
