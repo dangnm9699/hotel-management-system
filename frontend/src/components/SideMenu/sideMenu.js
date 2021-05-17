@@ -122,10 +122,16 @@ class SideMenu extends React.Component {
                 onClick={e => this.selectMenu(e)}
               >{'Check in'}</MenuItem>
               <MenuItem
+                value='inhouse'
+                active={this.state.menuSelected === 'inhouse' ? true : false}
+                onClick={e => this.selectMenu(e)}
+              >{'Khách đang ở'}</MenuItem>
+              <MenuItem
                 value='checkout'
                 active={this.state.menuSelected === 'checkout' ? true : false}
                 onClick={e => this.selectMenu(e)}
               >{'Check out'}</MenuItem>
+
             </SubMenu>
           </Menu>
           {/* <Menu iconShape="circle">
