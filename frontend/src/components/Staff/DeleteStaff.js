@@ -45,10 +45,11 @@ class DeleteStaff extends React.Component {
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#modalDeleteForm').modal('hide');
-                await this.props.reloadpage();
-                alert("Xóa nhân viên thành công");
+                $('#alert-content').html('Xoá nhân viên thành công!')
+                $('#alert').modal('show')
             } else {
-                alert(res.status);
+                $('#alert-content').html('Đã xảy ra lỗi, vui lòng thử lại sau!')
+                $('#alert').modal('show')
             }
         } catch (e) {
             alert(e);

@@ -66,21 +66,46 @@ class DetailStaff extends React.Component {
                             </div><div className="container"></div>
                             <div className="modal-body">
                                 <form id="myform" onSubmit={this.openApply}>
+                                    <label>Tên nhân viên</label>
+                                    <div>
+                                        <input value={this.state.data.name} disabled required="required" name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên nhân viên" />
+                                    </div>
                                     <div className="form-group">
-                                        <label>Tên nhân viên</label>
-                                        <input name="name" type="text" disabled value={this.state.data.name} className="form-control" placeholder="Nhập tên nhân viên" />
+                                        <label>Vị trí</label>
+                                        <select value={this.state.data.role} disabled required="required" name="role" onChange={this.myChangeHandler} className="form-control">
+                                            <option value="Lễ Tân">Lễ Tân</option>
+                                            <option value="Quản lý">Quản lý</option>
+                                            <option value="Thử việc">Thử việc</option>
+                                            <option value="Phục vụ">Phục vụ</option>
+                                            <option value="Lao công">Lao công</option>
+                                        </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Ngày sinh</label>
-                                        <input name="birthday" type="date" disabled value={this.state.data.birthday} className="form-control" />
+                                        <input value={this.state.data.birthday}  disabled required="required" name="birthday" onChange={this.myChangeHandler} type="date" className="form-control" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Số CMT/CCCD</label>
+                                        <input value={this.state.data.idNumber}  disabled required="required" name="idNumber" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập số CMT/CCCD" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Số điện thoại</label>
+                                        <input value={this.state.data.phonenumber} disabled required="required" name="phonenumber" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập số điện thoại của nhân viên" />
                                     </div>
                                     <div className="form-group">
                                         <label>Địa chỉ</label>
-                                        <input name="address" type="text" disabled value={this.state.data.address} className="form-control" />
+                                        <input value={this.state.data.address} disabled required="required" name="address" onChange={this.myChangeHandler} type="text" className="form-control" placeholder='Nhập địa chỉ nhân viên' />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Trạng thái</label>
+                                        <select value={this.state.data.status} disabled required="required" name="status" onChange={this.myChangeHandler} className="form-control">
+                                            <option value="Đang làm việc">Đang làm việc</option>
+                                            <option value="Đã thôi việc">Đã thôi việc</option>
+                                        </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
-                                        <textarea name="description" disabled value={this.state.data.description} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
+                                        <textarea value={this.state.data.description} disabled name="description" onChange={this.myChangeHandler} className="form-control" rows="3"></textarea>
                                     </div>
                                 </form>
                             </div>
