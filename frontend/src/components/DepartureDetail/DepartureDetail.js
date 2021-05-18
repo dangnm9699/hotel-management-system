@@ -1,4 +1,7 @@
 import React from 'react';
+import api from '../../Api/api';
+import { Modal } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
 
 
 class DepartureDetail extends React.Component {
@@ -26,22 +29,113 @@ class DepartureDetail extends React.Component {
             amountpaid: 0,
             discount: 0,
             reservatio: "Confirm booking",
+            loading: true,
+            modalShow: false,
+            message: "",
+            modalLoading: false,
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        try {
+            let id = this.props.match.params.id
+            //console.log(this.props, id)
+            let res = await api.getOrder(id)
 
+            //console.log(res.data)
+
+            let totalChildCount = (room) => {
+                let total = 0;
+                for (let i = 0; i < room.length; i++) {
+                    total += room[i].numChild
+                }
+                return total
+            }
+            let totalAdultCount = (room) => {
+                let total = 0;
+                for (let i = 0; i < room.length; i++) {
+                    total += room[i].numAdult
+                }
+                return total
+            }
+            res = res.data
+            //console.log(res)
+            this.setState({
+                loading: false,
+                name: res.data.Khach.name,
+                resid: res.data.Khach.Id,
+                folio: res.data.order.Id,
+                nightStay: res.data.order.numday,
+                arrivingAt: new Date(res.data.order.checkinTime),
+                leavingAt: new Date(res.data.order.checkoutTime),
+                adult: totalAdultCount(res.data.rooms),
+                children: totalChildCount(res.data.rooms),
+                phonenumber: res.data.Khach.phonenumber,
+                email: res.data.Khach.email,
+                idnumber: res.data.Khach.idNumber,
+                country: res.data.Khach.country,
+                totalchange: res.data.order.cost,
+                totalcredits: 0,
+                balance: res.data.order.cost - res.data.order.paid,
+                roomchanges: res.data.order.cost,
+                tax: 0,
+                extrachanges: 0,
+                amountpaid: res.data.order.paid,
+                discount: 0,
+                reservatio: res.data.order.type === "confirm" ? "Confirm booking" : "Hold booking",
+
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    checkout = async () => {
+        this.setState({ modalLoading: true })
+        try {
+            await api.checkout(this.state.folio)
+            this.setState({
+                modalShow: true,
+                message: "Checkout thành công",
+                modalLoading: false,
+            })
+        } catch (err) {
+            this.setState({
+                modalShow: true,
+                message: err.data.data.toString(),
+                modalLoading: false,
+            })
+            console.log(err)
+        }
+    }
+
+    hideModal = () => {
+        this.setState({ modalShow: false })
+        this.props.history.push('/checkout')
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <div className="container-fluid d-flex justify-content-center">
+                    <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div >
+            )
+        }
         return (
-            <div className="container-fluid">
+            <div className="container-fluid" >
+                <Notification show={this.state.modalShow} message={this.state.message} hideNotification={this.hideModal} />
+                <Loading show={this.state.modalLoading} />
                 <div className="row mt-3">
                     <div className="col-3 h4">
-                        Arrival list - Today
+                        Departure list {this.props.location.state.from && "- " + this.props.location.state.from}
                     </div>
                     <div className="col-2 ml-auto">
-                        <button type="button" className="btn btn-primary"> Check In</button>
+                        <button type="button" className="btn btn-primary" onClick={this.checkout}> Check Out</button>
                     </div>
                 </div>
                 <hr />
@@ -127,7 +221,6 @@ class DepartureDetail extends React.Component {
                         Total change: {this.state.totalchange} VND
                     </div>
                     <div className="col text-center">
-                        Total credits: {this.state.totalcredits} VND
                     </div>
                     <div className="col text-center">
                         Banlance: {this.state.balance} VND
@@ -143,52 +236,56 @@ class DepartureDetail extends React.Component {
                     <div className="col d-flex">
                         <div className="mx-auto w-75">
                             <table className="w-100">
-                                <tr>
-                                    <td>
-                                        Room changes:
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Room changes:
                                     </td>
-                                    <td>
-                                        {this.state.roomchanges} VND
+                                        <td>
+                                            {this.state.roomchanges} VND
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Tax:
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tax:
                                     </td>
-                                    <td>
-                                        {this.state.tax} VND
+                                        <td>
+                                            {this.state.tax} VND
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Extra changes:
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Extra changes:
                                     </td>
-                                    <td>
-                                        {this.state.extrachanges} VND
+                                        <td>
+                                            {this.state.extrachanges} VND
                                     </td>
-                                </tr>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                     <div className="col d-flex">
                         <div className="mx-auto w-75">
                             <table className="w-100">
-                                <tr>
-                                    <td>
-                                        Amount paid:
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Amount paid:
                                     </td>
-                                    <td>
-                                        {this.state.amountpaid} VND
+                                        <td>
+                                            {this.state.amountpaid} VND
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Discount:
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Discount:
                                     </td>
-                                    <td>
-                                        {this.state.discount} VND
+                                        <td>
+                                            {this.state.discount} VND
                                     </td>
-                                </tr>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -210,4 +307,48 @@ class DepartureDetail extends React.Component {
     }
 }
 
-export default DepartureDetail
+class Notification extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+    }
+    render() {
+
+        return (
+            <Modal show={this.props.show} onHide={this.props.hideNotification}>
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body >
+                    <div className="text-center">
+                        {this.props.message}
+                    </div>
+                </Modal.Body>
+            </Modal >
+        )
+    }
+}
+
+class Loading extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+    }
+    render() {
+
+        return (
+            <Modal show={this.props.show} backdrop="static">
+                <Modal.Body >
+                    <div className="d-flex justify-content-center text-primary">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal >
+        )
+    }
+}
+
+export default withRouter(DepartureDetail)

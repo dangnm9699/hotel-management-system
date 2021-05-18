@@ -161,18 +161,18 @@ class DepartureList extends React.Component {
                 <div className="row" id="departure-list">
                     <div className="col" >
                         <div className="row h2 mt-3 ml-3">
-                            Departure List
+                            Danh sách khách đi
                         </div>
                         <hr />
                         <div className="row">
                             <div className="col text-center">
-                                <button className={"btn w-50 " + this.state.buttonColor.buttonToday} onClick={this.clickButtonToday}>Today</button>
+                                <button className={"btn w-50 " + this.state.buttonColor.buttonToday} onClick={this.clickButtonToday}>Hôm nay</button>
                             </div>
                             <div className="col  text-center">
-                                <button className={"btn w-50 " + this.state.buttonColor.buttonTomorrow} onClick={this.clickButtonTomorrow}>Tomorrow</button>
+                                <button className={"btn w-50 " + this.state.buttonColor.buttonTomorrow} onClick={this.clickButtonTomorrow}>Ngày mai</button>
                             </div>
                             <div className="col  text-center">
-                                <button className={"btn w-50 " + this.state.buttonColor.buttonThisWeek} onClick={this.clickButtonThisWeek}>This Week</button>
+                                <button className={"btn w-50 " + this.state.buttonColor.buttonThisWeek} onClick={this.clickButtonThisWeek}>Tuần này</button>
                             </div>
                         </div>
                         <hr />

@@ -70,18 +70,18 @@ class Departure extends React.Component {
                             <div>{this.state.resid}</div>
                         </div>
                         <div className="col font-weight-bold">
-                            <div> Folio</div>
+                            <div> FolioID</div>
                             <div>{this.state.folio}</div>
                         </div>
                     </div>
                     <div className="row mt-1">
                         <div className="col">
-                            <div>{this.state.nightStay} Night Stay</div>
-                            <div>Arriving At {this.state.arrivingAt.getHours()}:{this.state.arrivingAt.getMinutes()}</div>
+                            <div>{this.state.nightStay} ngày đêm</div>
+                            <div>Giờ đi: {this.state.arrivingAt.getHours()}:{this.state.arrivingAt.getMinutes()}</div>
                         </div>
                         <div className="col">
-                            <div>Adult: {this.state.adult}</div>
-                            <div>Child: {this.state.children}</div>
+                            <div>Số người lớn: {this.state.adult}</div>
+                            <div>Số trẻ em: {this.state.children}</div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ class Departure extends React.Component {
                     <Link to={{
                         pathname: '/departuredetail/' + this.props.order.Id,
                         state: { from: this.props.from }
-                    }}>Click for more detail</Link>
+                    }}>Bấm để xem thêm chi tiết</Link>
                 </div>
             </div>
         )

@@ -73,7 +73,7 @@ class InHouseList extends React.Component {
                 <div className="row" id="departure-list">
                     <div className="col" >
                         <div className="row h2 mt-3 ml-3">
-                            In House List
+                            Danh sách khách đang trong phòng
                         </div>
                         <hr />
                         {listOrder}

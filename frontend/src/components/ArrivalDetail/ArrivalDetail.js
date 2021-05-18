@@ -132,7 +132,7 @@ class ArrivalDetail extends React.Component {
                 <Loading show={this.state.modalLoading} />
                 <div className="row mt-3">
                     <div className="col-3 h4">
-                        Arrival list {this.props.location.state.from && "- " + this.props.location.state.from}
+                    Danh sách khách đến {this.props.location.state.from && "- " + this.props.location.state.from}
                     </div>
                     <div className="col-2 ml-auto text-center">
                         <button type="button" className="btn btn-primary" onClick={this.checkin}> Check In</button>
@@ -150,7 +150,7 @@ class ArrivalDetail extends React.Component {
                         </div>
                     </div>
                     <div className="col">
-                        <div>Folio</div>
+                        <div>FolioID</div>
                         <div>
                             {this.state.folio}
                         </div>
@@ -159,13 +159,13 @@ class ArrivalDetail extends React.Component {
                 <hr />
                 <div className="row">
                     <div className="col h3">
-                        General Information
+                        Thông tin khách hàng
                     </div>
                 </div>
                 <div className="row">
                     <div className="col text-center">
                         <div className="h5">
-                            Arival
+                            Giờ đến: 
                         </div>
                         <div>
                             {this.state.arrivingAt.toDateString()}
@@ -173,7 +173,7 @@ class ArrivalDetail extends React.Component {
                     </div>
                     <div className="col text-center">
                         <div className="h5">
-                            Arrival
+                            Giờ đi
                         </div>
                         <div>
                             {this.state.leavingAt.toDateString()}
@@ -181,7 +181,7 @@ class ArrivalDetail extends React.Component {
                     </div>
                     <div className="col text-center">
                         <div className="h5">
-                            Night
+                            Ngày đên: 
                         </div>
                         <div>
                             {this.state.nightStay}
@@ -191,45 +191,45 @@ class ArrivalDetail extends React.Component {
                 <hr />
                 <div className="row">
                     <div className="col h3">
-                        Guest Information
+                        Thông tin khách hàng
                     </div>
                 </div>
                 <div className="row">
                     <div className="col ml-5">
                         <div className="row">
-                            Phone Number: {this.state.phonenumber}
+                            Số điện thoại: {this.state.phonenumber}
                         </div>
                         <div className="row">
                             Email: {this.state.email}
                         </div>
                         <div className="row">
-                            Person Identification/Passport Number: {this.state.idnumber}
+                            Số CMT/CCCD/Hộ chiếu: {this.state.idnumber}
                         </div>
                         <div className="row">
-                            Country: {this.state.country}
+                            Quốc tịch: {this.state.country}
                         </div>
                     </div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col h3">
-                        Summary
+                        Tổng quan
                     </div>
                 </div>
                 <div className="row">
                     <div className="col text-center">
-                        Total change: {this.state.totalchange} VND
+                        Tổng cộng: {this.state.totalchange} VND
                     </div>
                     <div className="col text-center">
                     </div>
                     <div className="col text-center">
-                        Banlance: {this.state.balance} VND
+                        Chưa thanh toán: {this.state.balance} VND
                     </div>
                 </div>
                 <hr />
                 <div className="row">
                     <div className="col h3">
-                        Detail
+                        Chi tiết
                     </div>
                 </div>
                 <div className="row">
@@ -239,7 +239,7 @@ class ArrivalDetail extends React.Component {
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Room changes:
+                                            Tiền phòng:
                                     </td>
                                         <td>
                                             {this.state.roomchanges} VND
@@ -247,7 +247,7 @@ class ArrivalDetail extends React.Component {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Tax:
+                                            Thuế:
                                     </td>
                                         <td>
                                             {this.state.tax} VND
@@ -255,7 +255,7 @@ class ArrivalDetail extends React.Component {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Extra changes:
+                                            Dịch vụ khác:
                                     </td>
                                         <td>
                                             {this.state.extrachanges} VND
@@ -271,7 +271,7 @@ class ArrivalDetail extends React.Component {
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Amount paid:
+                                            Đã thanh toán:
                                     </td>
                                         <td>
                                             {this.state.amountpaid} VND
@@ -279,7 +279,7 @@ class ArrivalDetail extends React.Component {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Discount:
+                                            Giảm giá:
                                     </td>
                                         <td>
                                             {this.state.discount} VND
@@ -292,12 +292,12 @@ class ArrivalDetail extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col h3">
-                        Other Information
+                        Thông tin khác
                     </div>
                 </div>
                 <div className="row">
                     <div className="col ml-5">
-                        Reservatio: {this.state.reservatio}
+                        Kiểu đặt phòng: {this.state.reservatio}
                     </div>
                 </div>
                 <div className="row mb-5">
