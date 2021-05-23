@@ -175,13 +175,13 @@ body{
     transform: rotate(180deg); 
 }
 /*for animation*/ 
-.dropdown-toggle:after { 
+.header  .dropdown-toggle:after { 
     transition: 0.7s; 
 }
 .header .btn:focus {
     outline: none;
     box-shadow: none;
 }
-.user .dropdown-toggle{
+.header .user .dropdown-toggle{
     margin-top: 3px;
 }
