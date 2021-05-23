@@ -16,27 +16,39 @@ export default class Login extends React.Component {
       "formData": {},
       "logInFailed": false,
       "successRegister": successRegister,
-      "successLogin": false
+      "successLogin": false,
+      loading: false,
     }
   }
   render() {
+    if (this.state.loading) {
+      return (
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div >
+      )
+    }
     var failedLogIn = ''
     var successRegister = ''
-    if (this.props.user != null) {
-      return <Redirect to="/"></Redirect>
-    }
     if (this.state.serverError === true) {
       return <Page500 />
     }
 
     if (this.state.successLogin === true) {
-      let returnPage = '/home'
+      let returnPage = '/dashboard'
       if (this.props.location.state && this.props.location.state.from) {
         returnPage = this.location.state.from
       }
       return <Redirect to={returnPage}></Redirect>
     }
 
+    if (this.props.user != null) {
+      return <Redirect to="/dashboard"></Redirect>
+    }
 
     if (this.state.successRegister === true) {
       successRegister = <div className="row success-register text-primary">
@@ -94,18 +106,20 @@ export default class Login extends React.Component {
   logInUser = async (e) => {
     let data = this.state.formData
     e.preventDefault()
+    this.setState({ loading: true })
     try {
       var response = await api.login(data);
       if (response.status === 200) {
         this.setState({ 'successLogin': true })
         localStorage.setItem('accessToken', response.data.accessToken)
         await this.props.setToken(response.data.accessToken)
-        return
       }
-      if (response.status === 401) {
+
+      this.setState({ loading: false })
+    } catch (err) {
+      if (err.response.status === 401) {
         this.setState({ 'logInFailed': true })
       }
-    } catch (err) {
       console.log(err)
       this.setState({ "serverError": true })
     }

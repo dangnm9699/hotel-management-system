@@ -18,6 +18,7 @@ class InHouseList extends React.Component {
     }
 
     async componentDidMount() {
+        document.title = "MyHotel - Khách đang ở"
         try {
             let res = await api.getOrderInHouse(1)
             this.setState({ list: res.data.data, pagination: res.data.pagination })

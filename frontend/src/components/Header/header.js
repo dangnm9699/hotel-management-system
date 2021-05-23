@@ -14,12 +14,6 @@ export default class Header extends React.Component {
                 </a>
 
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a className="dropdown-item" href={"/profile?username=" + user.username}>
-                        <p><i className="fas fa-user-check"></i>&nbsp; Hồ sơ</p>
-                    </a>
-                    <a className="dropdown-item" href="/editprofile">
-                        <p><i className="fas fa-user-edit"></i>&nbsp; Cập nhật</p>
-                    </a>
                     <a className="dropdown-item" href="#" onClick={this.logOut}>
                         <p><i className="fas fa-sign-out-alt"></i>&nbsp; Đăng xuất</p>
                     </a>
