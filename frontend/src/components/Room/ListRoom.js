@@ -39,6 +39,7 @@ export default class ListRoom extends React.Component {
     }
 
     componentDidMount = async () => {
+        document.title = "MyHotel - Quản lý phòng"
         await this.getData(1)
     }
 
@@ -192,6 +193,22 @@ export default class ListRoom extends React.Component {
                     {roomList}
                 </div>
                 <Paginator pagination={this.state.pagination} getData={this.getData} />
+                <div className="modal fade" id="alert" >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Xác nhận</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div><div className="container"></div>
+                            <div className="modal-body" id='alert-content'>
+                                <p>Thêm thành công!</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div >
         );
     }

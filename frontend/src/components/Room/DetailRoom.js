@@ -55,8 +55,7 @@ class DetailRoom extends React.Component {
                     onClick={this.openForm}
                 ><i className="fa fa-info-circle" aria-hidden="true"></i>&nbsp; Chi tiết</button>
 
-
-                <div className="modal fade" id={this.state.modal.formId}>
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -77,6 +76,7 @@ class DetailRoom extends React.Component {
                                                 <option value="Deluxe">Deluxe</option>
                                                 <option value="Superior">Superior</option>
                                                 <option value="Suite">Suite</option>
+                                                <option value="Connecting Room">Connecting Room</option>
                                             </select>
                                         </div>
                                         <div className="col form-group">

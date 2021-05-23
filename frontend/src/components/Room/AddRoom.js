@@ -10,7 +10,7 @@ class AddRoom extends React.Component {
 
         this.state = {
             data: {
-                status: "Đang sử dụng",
+                status: "Trống",
                 type: "Standard"
             },
         }
@@ -50,6 +50,7 @@ class AddRoom extends React.Component {
     }
 
     acceptApply = async () => {
+        let content = '';
         try {
             let res = await api.createRoom(this.state.data);
             if (res.status === 200) {
@@ -57,14 +58,22 @@ class AddRoom extends React.Component {
                 this.setState({ data: {} })
                 $('#modalAddApply').modal('hide');
                 $('#modalAddForm').modal('hide');
-                await this.props.reloadpage();
-                alert("Thêm phòng thành công");
+                content = 'Thêm phòng thành công!';
             } else {
-                alert(res.status);
+                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
             }
         } catch (e) {
-            alert(e)
+            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+        } finally {
+            $('#alert-content').html(content);
+            $('#alert').modal('show');
+            await this.props.reloadpage();
         }
+    }
+
+    submitForm = (e) => {
+        e.preventDefault();
+        this.openApply();
     }
 
     render() {
@@ -77,27 +86,28 @@ class AddRoom extends React.Component {
                 ><i className="fas fa-plus" aria-hidden="true"></i>&nbsp; Thêm phòng mới</button>
 
 
-                <div className="modal fade" id="modalAddForm">
+                <div className="modal fade" id="modalAddForm" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h4 className="modal-title">Thêm phòng</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
-                            <div className="modal-body">
-                                <form>
+                            <form id="add-room" onSubmit={this.submitForm}>
+                                <div className="modal-body">
                                     <div className="form-group">
                                         <label>Tên phòng</label>
-                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" />
+                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" required />
                                     </div>
                                     <div className="row">
                                         <div className="col form-group">
                                             <label>Loại phòng</label>
                                             <select name="type" onChange={this.myChangeHandler} className="form-control">
-                                                <option value="Standard">Standard</option>
+                                                <option value="Standard" selected>Standard</option>
                                                 <option value="Deluxe">Deluxe</option>
                                                 <option value="Superior">Superior</option>
                                                 <option value="Suite">Suite</option>
+                                                <option value="Connecting Room">Connecting Room</option>
                                             </select>
                                         </div>
                                         <div className="col form-group">
@@ -105,38 +115,38 @@ class AddRoom extends React.Component {
                                             <select name="status" onChange={this.myChangeHandler} className="form-control">
                                                 <option value="Đang sử dụng">Đang sử dụng</option>
                                                 <option value="Đã đặt trước">Đã đặt trước</option>
-                                                <option value="Trống">Trống</option>
+                                                <option value="Trống" selected>Trống</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col form-group">
                                             <label>Giới hạn người lớn</label>
-                                            <input name="maxadult" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" />
+                                            <input name="maxadult" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" required />
                                         </div>
                                         <div className="col form-group">
                                             <label>Giới hạn trẻ em</label>
-                                            <input name="maxchild" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" />
+                                            <input name="maxchild" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" required />
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label>Giá phòng</label>
-                                        <input name="price" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập giá phòng" />
+                                        <input name="price" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập giá phòng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
-                                        <textarea name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
+                                        <textarea name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả" required></textarea>
                                     </div>
-                                </form>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
-                                <button className="btn btn-primary col-2" onClick={this.openApply}>Thêm</button>
-                            </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
+                                    <button className="btn btn-primary col-2" type="submit">Thêm</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div className="modal fade" id="modalAddApply" data-backdrop="static">
+                <div className="modal fade" id="modalAddApply" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -153,7 +163,7 @@ class AddRoom extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade zindex-popover" id="modalAddCancel" data-backdrop="static">
+                <div className="modal fade zindex-popover" id="modalAddCancel" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
