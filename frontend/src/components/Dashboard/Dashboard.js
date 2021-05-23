@@ -17,7 +17,7 @@ export default class Dashboard extends React.Component {
         return (
             <div className="content-container container-fluid">
                 <div id="dashboard">
-                    <div id="charts" className="row sparkboxes mt-4">
+                    {/* <div id="charts" className="row sparkboxes mt-4">
                         <div className="col-md-3">
                             <div className="color-box color-box1">
                                 <div className="details">
@@ -54,7 +54,7 @@ export default class Dashboard extends React.Component {
                                 <SparkBox4 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="row mt-4">
                         <div className="col-md-4">
                             <RoomStatusCountChart />
