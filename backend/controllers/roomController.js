@@ -152,3 +152,18 @@ exports.getIdleRoomByType = async function (req, res) {
         })
     }
 }
+
+exports.getRoomCountByStatusWithType = async function (req, res) {
+    try {
+        let type = req.query.type;
+        let result = await Room.getRoomCountByStatusWithType(type);
+        result.success = true;
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}

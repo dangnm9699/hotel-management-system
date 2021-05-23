@@ -1,6 +1,6 @@
 const Order = require('../models/Order')
 
-exports.createOrder = async function(req, res){
+exports.createOrder = async function (req, res) {
     try {
         let id = await Order.createOrder(req.body)
         res.json({
@@ -9,12 +9,12 @@ exports.createOrder = async function(req, res){
         })
     } catch (err) {
         console.log(err)
-        if(typeof err === 'string' && err.startsWith('Phòng ')){
+        if (typeof err === 'string' && err.startsWith('Phòng ')) {
             res.status(400).json({
                 success: false,
                 err,
             })
-        }else{
+        } else {
             res.status(500).json({
                 success: false,
                 err,
@@ -22,7 +22,7 @@ exports.createOrder = async function(req, res){
         }
     }
 }
-exports.getOrder = async function(req, res){
+exports.getOrder = async function (req, res) {
     try {
         let data = await Order.createOrder(req.body)
         res.json({
@@ -186,6 +186,19 @@ exports.getListInHouse = async function (req, res) {
         let page = parseInt(req.query.page, 10) || 1
         let perpage = parseInt(req.query.perpage) || 1000
         let result = await Order.getListInHouse(page, perpage)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.getRevenue = async function (req, res) {
+    try {
+        let result = await Order.getRevenue();
         result.success = true
         res.json(result)
     } catch (err) {

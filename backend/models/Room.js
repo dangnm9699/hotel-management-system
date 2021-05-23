@@ -47,6 +47,7 @@ exports.getIdleRoomByType = async function (type, checkinTime, checkoutTime) {
     // console.log(subquery.toString())
     return knex('Phong').whereNot('status', 'đã xoá').where('type', type).whereNotIn('Id', subquery);
 }
+
 exports.checkIdleRoomId = async function (roomId, checkinTime, checkoutTime) {
     const subquery = knex('orders').join('order_room', 'order_room.orderId', 'orders.Id').where(builder =>
         builder.where('orders.checkinTime', '<=', checkinTime).andWhere('orders.checkoutTime', '>=', checkinTime)
@@ -57,6 +58,17 @@ exports.checkIdleRoomId = async function (roomId, checkinTime, checkoutTime) {
     //let result = await subquery;
     // console.log(subquery.toString())
     return knex('Phong').whereNot('status', 'đã xoá').where('Id', roomId).whereNotIn('Id', subquery).select('Id');
+}
+
+exports.getRoomCountByStatusWithType = async function (type) {
+    const countEmpty = knex.raw(`SUM(CASE WHEN status = 'Trống' THEN 1 else 0 end) AS count_empty`);
+    const countInUse = knex.raw(`SUM(CASE WHEN status = 'Đang sử dụng' THEN 1 else 0 end) AS count_in_use`);
+    const countBooked = knex.raw(`SUM(CASE WHEN status = 'Đã đặt trước' THEN 1 else 0 end) AS count_booked`);
+    const query = knex('Phong').select(countEmpty, countInUse, countBooked);
+    if (type != 'All') {
+        return query.where('type', type);
+    }
+    return query;
 }
 
 
