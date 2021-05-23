@@ -10,7 +10,6 @@ exports.generateToken = function (user, secretSignature, tokenLife) {
   return new Promise((resolve, reject) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
     const userData = {
-      userId: user.userId,
       username: user.username,
       acctype: user.acctype,
     }
@@ -37,6 +36,7 @@ exports.generateToken = function (user, secretSignature, tokenLife) {
  * @param {*} secretKey 
  */
 exports.verifyToken = (token, secretKey) => {
+  //console.log('verifytoken: ', token)
   return new Promise((resolve, reject) => {
     jwt.verify(token, secretKey, (error, decoded) => {
       if (error) {
