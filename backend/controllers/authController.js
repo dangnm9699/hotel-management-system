@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 let tokenList = {}
 
 exports.login = async function (req, res) {
+    // console.log('here')
     try {
         let user = await Account.getAccount(req.body.username)
         if (!user) {
@@ -25,6 +26,7 @@ exports.login = async function (req, res) {
         }
         const accessToken = await jwtHelper.generateToken(user, config.accessTokenSecret, config.accessTokenLife)
         const refreshToken = await jwtHelper.generateToken(user, config.refreshTokenSecret, config.refreshTokenLife)
+        // console.log("tokenlife:", config.refreshTokenLife)
         tokenList[refreshToken] = { accessToken, refreshToken };
         res.cookie('refreshToken', refreshToken, { secure: false, httpOnly: true, maxAge: config.refreshTokenCookieLife });
         return res.status(200).json({
@@ -43,18 +45,19 @@ exports.login = async function (req, res) {
 exports.refreshToken = async (req, res) => {
     // User gửi mã refresh token kèm theo trong body
     const refreshTokenFromClient = req.cookies.refreshToken;
+    // console.log('refreshToken: ', refreshTokenFromClient)
     // debug("tokenList: ", tokenList);
 
     // Nếu như tồn tại refreshToken truyền lên và nó cũng nằm trong tokenList của chúng ta
     if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {
         try {
             // Verify kiểm tra tính hợp lệ của cái refreshToken và lấy dữ liệu giải mã decoded 
-            const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
+            const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, config.refreshTokenSecret);
             // Thông tin user lúc này các bạn có thể lấy thông qua biến decoded.data
             // có thể mở comment dòng debug bên dưới để xem là rõ nhé.
             // debug("decoded: ", decoded);
-            const user = decoded.data;
-            const accessToken = await jwtHelper.generateToken(user, accessTokenSecret, accessTokenLife);
+            // console.log('decoded', decoded)
+            const accessToken = await jwtHelper.generateToken(decoded, config.accessTokenSecret, config.accessTokenLife);
             // gửi token mới về cho người dùng
             return res.status(200).json({
                 success: true,
@@ -62,6 +65,7 @@ exports.refreshToken = async (req, res) => {
             });
         } catch (error) {
             delete tokenList[refreshTokenFromClient];
+            console.log(error);
             res.status(403).json({
                 success: false,
                 message: 'Invalid refresh token.',
@@ -90,11 +94,12 @@ exports.logOut = function (req, res) {
 
 exports.register = async function (req, res) {
     try {
-        console.log(config.saltRounds)
-        console.log(req.body.password)
+        // console.log(config.saltRounds)
+        // console.log(req.body.password)
         req.body.password = await bcrypt.hash(req.body.password, config.saltRounds)
         let id = await Account.createAccount(req.body)
-        console.log(id)
+        // console.log(req.body)
+        // console.log(id)
         res.status(200).json({
             success: true,
             id: id,
@@ -109,4 +114,101 @@ exports.checkAuth = function (req, res) {
     res.json({
         success: true
     })
+}
+
+exports.getAccountList = async function(req, res){
+
+}
+exports.getAccount = async function (req, res) {
+    try {
+        let staff = await Account.getAccountById(req.params.id)
+        if (!staff) {
+            res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+            return
+        }
+        res.json({
+            success: true,
+            data: staff,
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+
+
+exports.getAccountList = async function (req, res) {
+    try {
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Account.getAccountList(page, perpage)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.deleteAccount = async function (req, res) {
+    try {
+        let count = await Account.deleteAccount(req.params.id)
+        if (count == 0) {
+            res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+            return
+        }
+        res.json({
+            success: true,
+            count
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.searchAccount= async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Account.searchAccount(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+exports.searchUsername = async function (req, res) {
+    try {
+        let key = req.query.key
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 1000
+        let result = await Account.searchUsername(page, perpage, key)
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
 }
