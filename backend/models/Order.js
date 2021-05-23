@@ -21,19 +21,28 @@ exports.createOrder = async function (data) {
         });
         try {
             let costs = [];
+            let orderd = {};
             for (let i = 0; i < roomIds.length; i++) {
-                let check = await trx.where('Id', roomIds[i]).select('status', 'price', 'name').from('Phong');
+                let check = await trx.where('Id', roomIds[i]).select('status', 'price', 'name', 'status').from('Phong');
                 // console.log(check)
+                if (orderd[check[0].name]) {
+                    let message = 'Phòng ' + check[0].name + ' đã sử dụng'
+                    return Promise.reject(message);
+                }
                 if (check[0].status === 'Trống') {
                     // console.log(check)
                     costs.push(check[0].price)
+                    orderd[check[0].name] = true;
                     await trx.where('Id', roomIds[i]).update('status', roomStatus).into('Phong');
                 } else {
                     let checkId = await Room.checkIdleRoomId(roomIds[i], data.checkinTime, data.checkoutTime)
                     if (checkId.length > 0) {
                         costs.push(check[0].price)
-                        await trx.where('Id', roomIds[i]).update('status', roomStatus).into('Phong');
-                    }else{
+                        orderd[check[0].name] = true;
+                        if (check[0].status !== 'Đang sử dụng') {
+                            await trx.where('Id', roomIds[i]).update('status', roomStatus).into('Phong');
+                        }
+                    } else {
                         let message = 'Phòng ' + check[0].name + ' đã sử dụng'
                         return Promise.reject(message);
                     }
@@ -311,3 +320,7 @@ exports.getListInHouse = async function (page, perpage) {
 // // exports.getOrder(1)
 // exports.getListOrderToCheckIn(1,6)
 // exports.getListOrderToCheckInByWeek(1,6)
+
+exports.getRevenue = async function () {
+    return knex('orders').select('checkoutTime', 'cost').orderBy('checkoutTime', 'asc');
+}

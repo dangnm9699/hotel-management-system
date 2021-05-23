@@ -149,3 +149,18 @@ exports.searchGuest = async function (req, res) {
         })
     }
 }
+
+exports.getGuestCountByRegion = async function (req, res) {
+    try {
+        let time = req.query.time;
+        let result = await Guest.getGuestCountByRegion(time);
+        result.success = true
+        res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}

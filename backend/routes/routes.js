@@ -3,6 +3,7 @@ const guestRouter = require('./guestRoutes')
 const roomRouter = require('./roomRoutes')
 const orderRouter = require('./orderRoutes')
 const staffRouter = require('./staffRoutes')
+const chamCongRouter = require('./timeKeepingRouters')
 const notFound = require('./404')
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -23,5 +24,6 @@ module.exports = function (app) {
   app.use('/room', roomRouter)
   app.use('/order', orderRouter)
   app.use('/staff', staffRouter)
+  app.use('/timekeeping', chamCongRouter)
   app.use(notFound);
 }
