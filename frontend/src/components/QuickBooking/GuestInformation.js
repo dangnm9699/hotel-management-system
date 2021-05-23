@@ -114,19 +114,19 @@ class GuestInformation extends React.Component {
             <div className="col-11">
                 <div className="form-group">
                     <label >Tên khách hàng</label>
-                    <input type="email" className="form-control" name="name" value={this.state.guestInformationNew.name} onChange={this.changeNewHandler} placeholder="Nhập tên khách hàng" />
+                    <input type="email" className="form-control" name="name" value={this.state.guestInformationNew.name} onChange={this.changeNewHandler} placeholder="Nhập tên khách hàng" required />
                 </div>
                 <div className="form-group">
                     <label >Quốc tịch</label>
-                    <input type="text" className="form-control" name="country" value={this.state.guestInformationNew.country} onChange={this.changeNewHandler} placeholder="Nhập quốc tịch" />
+                    <input type="text" className="form-control" name="country" value={this.state.guestInformationNew.country} onChange={this.changeNewHandler} placeholder="Nhập quốc tịch" required />
                 </div>
                 <div className="form-group">
                     <label >Số CMT/CCCD/Hộ chiếu</label>
-                    <input type="text" className="form-control" name="idNumber" value={this.state.guestInformationNew.idNumber} onChange={this.changeNewHandler} placeholder="Nhập số CMT/CCCD/Hộ chiếu" />
+                    <input type="text" className="form-control" name="idNumber" value={this.state.guestInformationNew.idNumber} onChange={this.changeNewHandler} placeholder="Nhập số CMT/CCCD/Hộ chiếu" required />
                 </div>
                 <div className="form-group">
                     <label >Số điện thoại</label>
-                    <input type="text" className="form-control" name="phonenumber" value={this.state.guestInformationNew.phonenumber} onChange={this.changeNewHandler} placeholder="Nhập số điện thoại" />
+                    <input type="text" className="form-control" name="phonenumber" value={this.state.guestInformationNew.phonenumber} onChange={this.changeNewHandler} placeholder="Nhập số điện thoại" required />
                 </div>
                 <div className="form-group">
                     <label >Email</label>
@@ -258,13 +258,13 @@ class Search extends React.Component {
         return (
             <Modal show={this.props.show} onHide={this.props.handleClose} size="lg" scrollable={true} backdrop="static">
                 <Modal.Header closeButton>
-                    <Modal.Title>Search Results</Modal.Title>
+                    <Modal.Title>Kết quả tìm kiếm</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <div className="row">
-                        <div className="col">Phone Number</div>
-                        <div className="col">Name</div>
-                        <div className="col">Country</div>
+                        <div className="col">Số điện thoại</div>
+                        <div className="col">Tên</div>
+                        <div className="col">Quốc tịch</div>
                     </div>
                     <hr />
                     <div className="container-fluid">
@@ -273,10 +273,10 @@ class Search extends React.Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.handleClose}>
-                        Close
+                        Đóng
                     </Button>
                     <Button variant="primary" onClick={this.select}>
-                        Select
+                        Chọn
                     </Button>
                 </Modal.Footer>
             </Modal >

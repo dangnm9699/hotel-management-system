@@ -22,6 +22,9 @@ import ListRoom from './components/Room/ListRoom'
 import ListStaff from './components/Staff/ListStaff'
 import InHouseList from './components/InHouseList/InHouseList'
 import InHouseDetail from './components/InHouseDetail/InHouseDetail'
+import CreateAccount from './components/Account/createAccount'
+import TimeKeeping from './components/TimeKeeping/TimeKeeping'
+import ListAccount from './components/Account/listAccount'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -66,6 +69,9 @@ class App extends React.Component {
               <Route path="/departuredetail/:id" render={(props) => <DepartureDetail user={this.state.user} {...props} />} />
               <Route path="/inhouse" render={(props) => <InHouseList user={this.state.user} {...props} />} />
               <Route path="/inhousedetail/:id" render={(props) => <InHouseDetail user={this.state.user} {...props} />} />
+              <Route path="/createstaffaccount" render={(props) => <CreateAccount user={this.state.user} {...props} />} />
+              <Route path="/timekeeping" render={(props) => <TimeKeeping user={this.state.user} {...props} />} />
+              <Route path="/accountmanager" render={(props) => <ListAccount user={this.state.user} {...props} />} />
               <Route path="/:unknown">
                 <Page404 />
               </Route>
