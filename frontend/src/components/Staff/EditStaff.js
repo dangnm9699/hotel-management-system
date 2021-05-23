@@ -90,7 +90,7 @@ class EditStaff extends React.Component {
             alert(e);
         }
     }
-    submitForm = e =>{
+    submitForm = e => {
         e.preventDefault()
         this.openApply()
     }
@@ -105,7 +105,7 @@ class EditStaff extends React.Component {
                 ><i className="fa fa-edit" ></i>&nbsp; Sửa</button>
 
 
-                <div className="modal fade" id={this.state.modal.formId}>
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -164,7 +164,7 @@ class EditStaff extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade" id={this.state.modal.applyId} data-backdrop="static">
+                <div className="modal fade" id={this.state.modal.applyId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -181,7 +181,7 @@ class EditStaff extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade zindex-popover" id={this.state.modal.cancelId} data-backdrop="static">
+                <div className="modal fade zindex-popover" id={this.state.modal.cancelId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">

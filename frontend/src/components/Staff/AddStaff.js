@@ -90,7 +90,7 @@ class AddStaff extends React.Component {
                 ><i className="fas fa-plus" aria-hidden="true"></i>&nbsp; Thêm nhân viên</button>
 
 
-                <div className="modal fade" id="modalAddForm">
+                <div className="modal fade" id="modalAddForm" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -101,25 +101,26 @@ class AddStaff extends React.Component {
                                 <div className="modal-body">
                                     <div className="form-group">
                                         <label>Tên nhân viên</label>
-                                        <input value={this.state.data.name}  required="required" name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên nhân viên" />
+                                        <input value={this.state.data.name} required="required" name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên nhân viên" />
                                     </div>
                                     <div className="form-group">
                                         <label>Vị trí</label>
-                                        <select value={this.state.data.role}  required="required" name="role" onChange={this.myChangeHandler} className="form-control">
+                                        <select value={this.state.data.role} required="required" name="role" onChange={this.myChangeHandler} className="form-control">
                                             <option value="Lễ Tân">Lễ Tân</option>
                                             <option value="Quản lý">Quản lý</option>
                                             <option value="Thử việc">Thử việc</option>
                                             <option value="Phục vụ">Phục vụ</option>
                                             <option value="Lao công">Lao công</option>
+                                            <option value="Bảo vệ">Bảo vệ</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Ngày sinh</label>
-                                        <input value={this.state.data.birthday}  required="required" name="birthday" onChange={this.myChangeHandler} type="date" className="form-control" />
+                                        <input value={this.state.data.birthday} required="required" name="birthday" onChange={this.myChangeHandler} type="date" className="form-control" />
                                     </div>
                                     <div className="form-group">
                                         <label>Số CMT/CCCD</label>
-                                        <input value={this.state.data.idNumber}  required="required" name="idNumber" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập số CMT/CCCD" />
+                                        <input value={this.state.data.idNumber} required="required" name="idNumber" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập số CMT/CCCD" />
                                     </div>
                                     <div className="form-group">
                                         <label>Số điện thoại</label>
@@ -127,18 +128,18 @@ class AddStaff extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Địa chỉ</label>
-                                        <input value={this.state.data.address}  required="required" name="address" onChange={this.myChangeHandler} type="text" className="form-control" placeholder='Nhập địa chỉ nhân viên' />
+                                        <input value={this.state.data.address} required="required" name="address" onChange={this.myChangeHandler} type="text" className="form-control" placeholder='Nhập địa chỉ nhân viên' />
                                     </div>
                                     <div className="form-group">
                                         <label>Trạng thái</label>
-                                        <select value={this.state.data.status}  required="required" name="status" onChange={this.myChangeHandler} className="form-control">
+                                        <select value={this.state.data.status} required="required" name="status" onChange={this.myChangeHandler} className="form-control">
                                             <option value="Đang làm việc">Đang làm việc</option>
                                             <option value="Đã thôi việc">Đã thôi việc</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
-                                        <textarea value={this.state.data.description}  name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
+                                        <textarea value={this.state.data.description} name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
@@ -149,7 +150,7 @@ class AddStaff extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade" id="modalAddApply" data-backdrop="static">
+                <div className="modal fade" id="modalAddApply" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -166,7 +167,7 @@ class AddStaff extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade zindex-popover" id="modalAddCancel" data-backdrop="static">
+                <div className="modal fade zindex-popover" id="modalAddCancel" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">

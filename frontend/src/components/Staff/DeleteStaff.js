@@ -65,7 +65,7 @@ class DeleteStaff extends React.Component {
                     onClick={this.openDeleteForm}
                 ><i className="fa fa-trash" aria-hidden="true"></i>&nbsp; Xoá</button>
 
-                <div className="modal fade" id="modalDeleteForm">
+                <div className="modal fade" id="modalDeleteForm" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">

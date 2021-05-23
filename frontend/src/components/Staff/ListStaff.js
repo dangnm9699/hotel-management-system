@@ -39,6 +39,7 @@ class ListStaff extends React.Component {
     }
 
     componentDidMount = async () => {
+        document.title = "MyHotel - Quản lý nhân viên"
         await this.getData(1)
         $('#alert').on('hide.bs.modal', (e) => {
             if (e.target.id === 'alert') {
@@ -152,7 +153,7 @@ class ListStaff extends React.Component {
             staffList.push(
                 <div className="short-post staff row" key={index}>
                     <a href="/>">
-                        <img src={'/anh_20170057.jpg'} alt="Room views" style={{ imageResolution: '300dpi' }} width="180px" />
+                        <img src={'/staff.png'} alt="Room views" style={{ imageResolution: '300dpi' }} width="180px" />
                     </a>
                     <div className="short-info staff">
                         <a href="/detailpost?postid=<?php echo $post->postid ?>">

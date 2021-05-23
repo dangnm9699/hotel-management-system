@@ -57,7 +57,7 @@ class DetailStaff extends React.Component {
                 ><i className="fa fa-info-circle" aria-hidden="true"></i>&nbsp; Chi tiết</button>
 
 
-                <div className="modal fade" id={this.state.modal.formId}>
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -82,11 +82,11 @@ class DetailStaff extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Ngày sinh</label>
-                                        <input value={this.state.data.birthday}  disabled required="required" name="birthday" onChange={this.myChangeHandler} type="date" className="form-control" />
+                                        <input value={this.state.data.birthday} disabled required="required" name="birthday" onChange={this.myChangeHandler} type="date" className="form-control" />
                                     </div>
                                     <div className="form-group">
                                         <label>Số CMT/CCCD</label>
-                                        <input value={this.state.data.idNumber}  disabled required="required" name="idNumber" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập số CMT/CCCD" />
+                                        <input value={this.state.data.idNumber} disabled required="required" name="idNumber" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập số CMT/CCCD" />
                                     </div>
                                     <div className="form-group">
                                         <label>Số điện thoại</label>
