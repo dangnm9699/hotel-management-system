@@ -1,11 +1,11 @@
 import React from 'react'
 import { ProSidebar, SidebarHeader, SidebarFooter, SidebarContent, Menu, SubMenu, MenuItem } from 'react-pro-sidebar';
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiFillClockCircle } from "react-icons/ai";
 import { IoAccessibility } from "react-icons/io5";
 import { BsFillBriefcaseFill, BsFillLightningFill, BsPeopleCircle } from "react-icons/bs";
 import { withRouter } from 'react-router-dom';
-
+import { MdVpnKey } from "react-icons/md";
 // import 'react-pro-sidebar/dist/css/styles.css';
 import '../../scss/sideMenu.scss';
 
@@ -131,8 +131,35 @@ class SideMenu extends React.Component {
                 active={this.state.menuSelected === 'checkout' ? true : false}
                 onClick={e => this.selectMenu(e)}
               >{'Check out'}</MenuItem>
-
             </SubMenu>
+            <MenuItem icon={<AiFillClockCircle />}
+              value='timekeeping'
+              active={this.state.menuSelected === 'timekeeping' ? true : false}
+              onClick={e => this.selectMenu(e)}
+            >
+              {'Chấm công nhân viên'}
+            </MenuItem>
+            <SubMenu icon={<MdVpnKey />}
+              title={'Quản lý các tài khoản'}
+              iconshape="circle"
+            >
+              <MenuItem
+                value='createstaffaccount'
+                active={this.state.menuSelected === 'createstaffaccount' ? true : false}
+                onClick={e => this.selectMenu(e)}
+              >
+              {'Cấp tài khoản nhân viên'}
+              </MenuItem>
+              
+              <MenuItem
+                value='accountmanager'
+                active={this.state.menuSelected === 'accountmanager' ? true : false}
+                onClick={e => this.selectMenu(e)}
+              >
+                {'Danh sách tài khoản '}
+              </MenuItem>
+            </SubMenu>
+
           </Menu>
           {/* <Menu iconShape="circle">
                 <SubMenu
