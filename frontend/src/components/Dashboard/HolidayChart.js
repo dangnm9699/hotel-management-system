@@ -53,6 +53,7 @@ export default class ApexChart extends React.Component {
             ],
             options: {
                 chart: {
+                    id: 'holiday-chart',
                     height: 350,
                     type: 'rangeBar'
                 },
@@ -79,10 +80,12 @@ export default class ApexChart extends React.Component {
                     }
                 },
                 xaxis: {
-                    type: 'datetime'
+                    type: 'datetime',
+                    min: new Date("2021-01-01").getTime(),
+                    max: new Date("2021-12-31").getTime()
                 },
                 yaxis: {
-                    show: false
+                    show: false,
                 },
                 grid: {
                     row: {

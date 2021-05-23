@@ -13,7 +13,7 @@ export default class SparkBox4 extends React.Component {
                     id: 'spark4',
                     group: 'sparks',
                     type: 'line',
-                    height: 80,
+                    height: 30,
                     sparkline: {
                         enabled: true
                     },

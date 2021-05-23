@@ -1,5 +1,6 @@
 import React from "react";
 import ReactApexChart from 'react-apexcharts';
+import api from "../../Api/api";
 
 export default class RoomStatusCountChart extends React.Component {
     constructor(props) {
@@ -10,11 +11,11 @@ export default class RoomStatusCountChart extends React.Component {
             series: [],
             options: {
                 chart: {
-                    type: 'donut',
+                    id: 'room-count-by-status-chart',
                 },
                 legend: {
                     position: 'right',
-                    offsetY: 100,
+                    offsetY: 90,
                 },
                 plotOptions: {
                     pie: {
@@ -30,44 +31,66 @@ export default class RoomStatusCountChart extends React.Component {
                         },
                     },
                 },
+                responsive: [{
+                    breakpoint: '1920px',
+                    options: {
+                        chart: {
+                            width: '400px',
+                        },
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }],
                 labels: ['Đang sử dụng', 'Đã đặt trước', 'Trống'],
                 dataLabels: {
                     enabled: false,
-                }
+                },
             },
         };
     }
 
-    componentDidMount = () => {
-        //TODO: query data from database
-        let series = [22, 26, 30];
-        this.setState({ series });
+    componentDidMount = async () => {
+        try {
+            let series = await this.retrieveData(this.state.option);
+            if (series == null) return;
+            this.setState({ series });
+        } catch (err) {
+            console.log(err);
+            return;
+        }
     }
 
-    onClick = (opt, btn) => {
+    onClick = async (opt, btn) => {
         let option = opt;
         let buttonText = btn;
-        let series = [];
-        switch (opt) {
-            case 'All':
-                series = [22, 26, 30];
-                break;
-            case 'Standard':
-                series = [1, 2, 3];
-                break;
-            case 'Deluxe':
-                series = [4, 5, 6];
-                break;
-            case 'Superior':
-                series = [7, 8, 9];
-                break;
-            case 'Suite':
-                series = [10, 11, 12];
-                break;
-            default:
-                series = [22, 26, 30];
+        try {
+            let series = await this.retrieveData(opt);
+            this.setState({ option, buttonText, series });
+        } catch (err) {
+            console.log(err);
+            return;
         }
-        this.setState({ option, buttonText, series });
+    }
+
+    retrieveData = async (opt) => {
+        try {
+            let res = await api.getRoomCountByStatusWithType(opt);
+            if (res.status === 200) {
+                let series = [];
+                let data = res.data[0]
+                series.push(data.count_in_use);
+                series.push(data.count_booked);
+                series.push(data.count_empty);
+                return series;
+            } else {
+                alert(res.status);
+                return;
+            }
+        } catch (err) {
+            console.log(err);
+            return;
+        }
     }
 
     render() {
@@ -89,11 +112,12 @@ export default class RoomStatusCountChart extends React.Component {
                         <div className="dropdown-item" onClick={() => this.onClick("Deluxe", "Deluxe")}>Deluxe</div>
                         <div className="dropdown-item" onClick={() => this.onClick("Superior", "Superior")}>Superior</div>
                         <div className="dropdown-item" onClick={() => this.onClick("Suite", "Suite")}>Suite</div>
+                        <div className="dropdown-item" onClick={() => this.onClick("Connecting room", "Connecting room")}>Connecting room</div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md">
-                        <ReactApexChart options={this.state.options} series={this.state.series} type="donut" height={350} />
+                        <ReactApexChart options={this.state.options} series={this.state.series} type="donut" />
                     </div>
                 </div>
             </div>

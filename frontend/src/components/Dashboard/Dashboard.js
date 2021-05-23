@@ -10,6 +10,9 @@ import SparkBox3 from './SparkBox3';
 import SparkBox4 from './SparkBox4';
 
 export default class Dashboard extends React.Component {
+    componentDidMount() {
+        document.title = "MyHotel - Tổng quan"
+    }
     render() {
         return (
             <div className="content-container container-fluid">
@@ -52,21 +55,20 @@ export default class Dashboard extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div id="charts" className="row mt-4">
+                    <div className="row mt-4">
                         <div className="col-md-4">
                             <RoomStatusCountChart />
                         </div>
                         <div className="col-md-8">
-                            <HolidayChart />
+                            <GuestCountByCountryChart />
                         </div>
                     </div>
-                    <div id="charts" className="row mt-4">
+                    <div className="row mt-4">
                         <div className="col-md-6">
                             <RevenueChart />
                         </div>
-
                         <div className="col-md-6">
-                            <GuestCountByCountryChart />
+                            <HolidayChart />
                         </div>
                     </div>
                 </div>

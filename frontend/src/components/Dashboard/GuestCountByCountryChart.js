@@ -1,86 +1,127 @@
 import React from "react";
 import ReactApexChart from 'react-apexcharts';
-
+import api from '../../Api/api';
 export default class GuestCountByCountryChart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            today: new Date(),
-            buttonText: '',
-            series: [{
-                name: "Nội địa",
-                data: [42, 52, 16, 55, 59, 51, 45, 32, 26, 33, 44, 51, 42, 56],
-            }, {
-                name: "Quốc tế",
-                data: [6, 12, 4, 7, 5, 3, 6, 4, 3, 3, 5, 6, 7, 4],
-            }],
+            buttonText: new Date().getFullYear(),
+            series: [],
             options: {
                 chart: {
-                    width: '100%',
+                    id: 'guest-count-by-country-chart',
+                    type: 'bar',
+                    height: 350,
                     stacked: true,
+                    toolbar: {
+                        show: true
+                    },
+                    zoom: {
+                        enabled: true
+                    }
                 },
                 plotOptions: {
                     bar: {
                         columnWidth: '45%',
                     }
                 },
-                colors: ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0'],
-                labels: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-                xaxis: {
-                    labels: {
-                        show: false
-                    },
-                    axisBorder: {
-                        show: false
-                    },
-                    axisTicks: {
-                        show: false
-                    },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
                 },
-                yaxis: {
-                    axisBorder: {
-                        show: false
-                    },
-                    axisTicks: {
-                        show: false
-                    },
-                    labels: {
-                        style: {
-                            colors: '#78909c'
-                        }
-                    }
+                fill: {
+                    opacity: 1
+                }
+                ,
+                colors: ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0'],
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    tickPlacement: 'on'
                 },
             }
         };
     }
 
-    componentDidMount = () => {
-        let today = this.state.today.toDateString();
-        let buttonText = this.getMonthAndYear(today);
-        this.setState({ buttonText });
+    getDate = (time) => {
+        return time.split("T")[0];
     }
 
-    onClick = (date) => {
+    componentDidMount = async () => {
+        try {
+            let series = await this.retrieveData(this.state.buttonText);
+            this.setState({ series });
+        } catch (err) {
+            console.log(err);
+            return;
+        }
+    }
+
+    retrieveData = async (time) => {
+        try {
+            let res = await api.getGuestCountByRegion(time);
+            console.log.apply(this.state.buttonText);
+            if (res.status === 200) {
+                let data = res.data;
+                data.forEach(e => {
+                    e.checkinTime = this.getDate(e.checkinTime);
+                });
+                let count = data.reduce(
+                    (counter, obj) => {
+                        let monthIndex = this.getMonthIndex(obj.checkinTime.split("-")[1]);
+                        if (obj.country === 'Việt Nam') counter['domestic'][monthIndex]++;
+                        else counter['international'][monthIndex]++;
+                        return counter;
+                    },
+                    {
+                        'domestic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        'international': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    }
+                );
+                let series = [
+                    {
+                        name: "Nội địa",
+                        data: count.domestic,
+                    }, {
+                        name: "Quốc tế",
+                        data: count.international,
+                    }
+                ]
+                return series;
+            } else {
+                alert(res.status);
+                return;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    onClick = async (date) => {
         let buttonText = date;
-        this.setState({ buttonText })
+        try {
+            let series = await this.retrieveData(buttonText);
+            this.setState({ series, buttonText });
+        } catch (err) {
+            console.log(err);
+            return;
+        }
     }
 
-    getMonthAndYear = (datetime) => {
-        let splits = datetime.split(" ");
-        let month = splits[1];
-        let year = splits[3];
-        let buttonText = month + ' ' + year;
-        return buttonText;
+    getYear = (datetime) => {
+        return datetime.split(" ")[3];
+    }
+
+    getMonthIndex = (month) => {
+        if (month.charAt(0) === '0') month = month.charAt(1);
+        let index = parseInt(month) - 1;
+        return index;
     }
 
     render() {
         let menu = [];
         for (let i = 0; i < 5; i++) {
-            let datetime = new Date(
-                this.state.today.getFullYear(),
-                this.state.today.getMonth() - Number(i),
-            ).toDateString();
-            let text = this.getMonthAndYear(datetime);
+            let text = new Date().getFullYear() - i;
             menu.push(
                 <div className="dropdown-item" onClick={() => this.onClick(text)}>{text}</div>
             );
@@ -96,6 +137,11 @@ export default class GuestCountByCountryChart extends React.Component {
                         type="button"
                         className="btn dropdown-toggle col-md-4"
                         data-toggle="dropdown"
+                        style={
+                            {
+                                textAlign: 'right'
+                            }
+                        }
                     ><b>{this.state.buttonText}</b></button>
                     <div className="dropdown-menu dropdown-menu-right">
                         {menu}
