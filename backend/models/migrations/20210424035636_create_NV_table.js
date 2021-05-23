@@ -4,7 +4,11 @@ exports.up = function (knex) {
     table.string('name', 100).notNullable();
     table.date('birthday');
     table.string('address').notNullable().defaultTo('')
+    table.string('idNumber').notNullable().defaultTo('')
     table.string('description').notNullable().defaultTo('');
+    table.string('phonenumber').notNullable();
+    table.string('role').notNullable().defaultTo('Lễ tân');
+    table.string('status').notNullable().defaultTo('Đang làm việc');
   })
 };
 

@@ -9,6 +9,7 @@ exports.up = function (knex) {
         table.datetime('checkinTime').notNullable();
         table.datetime('checkoutTime').notNullable();
         table.string('type').notNullable().defaultTo('hold');
+        table.string('status').notNullable().defaultTo('uncheck');
     })
 };
 
