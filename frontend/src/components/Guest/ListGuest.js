@@ -39,6 +39,7 @@ export default class ListGuest extends React.Component {
     }
 
     componentDidMount = async () => {
+        document.title = "MyHotel - Quản lý khách hàng"
         await this.getData(1)
     }
 
@@ -140,9 +141,9 @@ export default class ListGuest extends React.Component {
                         <img src={'/Guest.svg'} alt="Guest avatar" style={{ imageResolution: '300dpi' }} height="140px" width="180px" />
                     </a>
                     <div className="short-info guest">
-                        <a href="/detailpost?postid=<?php echo $post->postid ?>">
-                            <p className="contest-name">{guest.name}</p>
-                        </a>
+
+                        <p className="contest-name" onClick={this.reloadPage}>{guest.name}</p>
+
                         <div className="owner-option row">
                             <DetailGuest reloadpage={this.reloadPage} gid={guest.Id} />
                             <EditGuest reloadpage={this.reloadPage} gid={guest.Id} />
@@ -191,6 +192,22 @@ export default class ListGuest extends React.Component {
                     {guestList}
                 </div>
                 <Paginator pagination={this.state.pagination} getData={this.getData} />
+                <div className="modal fade" id="alert" >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Xác nhận</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div><div className="container"></div>
+                            <div className="modal-body" id='alert-content'>
+                                <p>Thêm thành công!</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div >
         );
 

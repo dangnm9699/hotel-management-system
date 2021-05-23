@@ -7,6 +7,7 @@ class DeleteGuest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            modal: {},
             data: {
                 Id: '',
                 name: '',
@@ -18,13 +19,19 @@ class DeleteGuest extends React.Component {
         }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        let modal = {}
+        modal.formId = "modalDeleteForm" + props.gid;
+        return { modal };
+    }
+
     openDeleteForm = async () => {
         try {
             let res = await api.getGuest(this.props.gid);
             if (res.status === 200) {
                 console.log(res.data.data);
                 this.setState({ data: res.data.data });
-                $('#modalDeleteForm').modal('show');
+                $('#' + this.state.modal.formId).modal('show');
             } else {
                 alert(res.status);
             }
@@ -34,22 +41,26 @@ class DeleteGuest extends React.Component {
     }
 
     cancelDelete = () => {
-        $('#modalDeleteForm').modal('hide');
+        $('#' + this.state.modal.formId).modal('hide');
     }
 
     applyDelete = async () => {
+        let content = '';
         try {
             let res = await api.deleteGuest(this.props.gid);
             if (res.status === 200) {
                 console.log(res.status, res.data);
-                $('#modalDeleteForm').modal('hide');
-                await this.props.reloadpage();
-                alert("Xóa khách hàng thành công");
+                $('#' + this.state.modal.formId).modal('hide');
+                content = 'Xóa khách hàng thành công!';
             } else {
-                alert(res.status);
+                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
             }
         } catch (e) {
-            alert(e);
+            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+        } finally {
+            $('#alert-content').html(content);
+            $('#alert').modal('show');
+            await this.props.reloadpage();
         }
     }
 
@@ -61,7 +72,7 @@ class DeleteGuest extends React.Component {
                     onClick={this.openDeleteForm}
                 ><i className="fa fa-trash" aria-hidden="true"></i>&nbsp; Xoá</button>
 
-                <div className="modal fade" id="modalDeleteForm">
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">

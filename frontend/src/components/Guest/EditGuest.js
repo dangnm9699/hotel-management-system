@@ -72,20 +72,29 @@ class EditGuest extends React.Component {
     }
 
     acceptApply = async () => {
+        let content = '';
         try {
             let res = await api.updateGuest(this.props.gid, this.state.data);
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.applyId).modal('hide');
                 $('#' + this.state.modal.formId).modal('hide');
-                await this.props.reloadpage();
-                alert("Sửa thông tin khách hàng thành công");
+                content = 'Cập nhật khách hàng thành công!';
             } else {
-                alert(res.status);
+                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
             }
         } catch (e) {
-            alert(e);
+            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+        } finally {
+            $('#alert-content').html(content);
+            $('#alert').modal('show');
+            await this.props.reloadpage();
         }
+    }
+
+    submiForm = (e) => {
+        e.preventDefault();
+        this.openApply();
     }
 
     render() {
@@ -98,16 +107,15 @@ class EditGuest extends React.Component {
                     onClick={this.openForm}
                 ><i className="fa fa-edit" ></i>&nbsp; Sửa</button>
 
-
-                <div className="modal fade" id={this.state.modal.formId}>
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h4 className="modal-title">Sửa thông tin khách hàng</h4>
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
-                            <div className="modal-body">
-                                <form>
+                            <form onSubmit={this.submiForm}>
+                                <div className="modal-body">
                                     <div className="form-group">
                                         <label>Tên khách hàng</label>
                                         <input name="name" value={this.state.data.name} onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên khách hàng" required />
@@ -128,16 +136,16 @@ class EditGuest extends React.Component {
                                         <label>Số CMND/CCCD</label>
                                         <input name="idNumber" value={this.state.data.idNumber} onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập CMND/CCCD khách hàng" required />
                                     </div>
-                                </form>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
-                                <button className="btn btn-primary col-2" onClick={this.openApply}>Cập nhật</button>
-                            </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
+                                    <button className="btn btn-primary col-2" type="submit">Cập nhật</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div className="modal fade" id={this.state.modal.applyId} data-backdrop="static">
+                <div className="modal fade" id={this.state.modal.applyId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -154,7 +162,7 @@ class EditGuest extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade zindex-popover" id={this.state.modal.cancelId} data-backdrop="static">
+                <div className="modal fade zindex-popover" id={this.state.modal.cancelId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">

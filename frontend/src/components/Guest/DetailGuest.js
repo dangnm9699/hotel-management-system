@@ -55,7 +55,7 @@ class DetailGuest extends React.Component {
                 ><i className="fa fa-info-circle" aria-hidden="true"></i>&nbsp; Chi tiết</button>
 
 
-                <div className="modal fade" id={this.state.modal.formId}>
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
