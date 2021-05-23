@@ -7,7 +7,7 @@ axios.interceptors.request.use(
         // config.headers['Content-Type'] = 'application/json'
         // config.headers['Access-Control-Allow-Origin'] = '*'
         config.validateStatus = function (status) {
-            return status >= 200 && status < 500
+            return status >= 200 && status < 500 && status !== 401
         }
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
@@ -26,13 +26,14 @@ axios.interceptors.response.use(
     },
     function (error) {
         const originalRequest = error.config;
+        console.log("origianlRequest: ", JSON.stringify(originalRequest))
         if (
-            error.response.status === 401 &&
+            error.response.status === 401 && originalRequest.url !== "http://localhost:3001/auth/refresh_token" &&
             !originalRequest._retry
         ) {
             originalRequest._retry = true;
             return axios
-                .post(`${baseUrl}/refresh_token`)
+                .post(`${baseUrl}/auth/refresh_token`)
                 .then((res) => {
                     if (res.status === 200) {
                         localStorage.setItem("accessToken", res.data.accessToken);
@@ -164,7 +165,52 @@ const api = {
     },
     getOrderInHouse: (page) => {
         return axios.get(`${baseUrl}/order/inhouse?page=${page}&perpage=8`)
-    }
+    },
+    getChamCong: (NVList, beginTime, endTime) => {
+        return axios.post(`${baseUrl}/timekeeping/list`, {
+            NVList: NVList,
+            beginTime: beginTime,
+            endTime: endTime,
+        })
+    },
+
+    getRoomCountByStatusWithType: (type) => {
+        return axios.get(`${baseUrl}/room/counts?type=${type}`);
+    },
+
+    addTimeKeeping: (NVId, time) => {
+        return axios.post(`${baseUrl}/timekeeping`, {
+            NVId: NVId,
+            date: time
+        })
+    },
+    deleteTimeKeeping: (Id) => {
+        return axios.delete(`${baseUrl}/timekeeping/${Id}`)
+    },
+    getGuestCountByRegion: (time) => {
+        return axios.get(`${baseUrl}/guest/counts?time=${time}`);
+    },
+    getRevenue: () => {
+        return axios.get(`${baseUrl}/order/revenue`);
+    },
+    getlistaccount: (page) => {
+        return axios.get(`${baseUrl}/auth?page=${page}&perpage=8`);
+    },
+    searchlistaccount: (page, key) => {
+        return axios.get(`${baseUrl}/auth/search?key=${key}&page=${page}&perpage=8`);
+    },
+    searchUsername: (page, key) => {
+        return axios.get(`${baseUrl}/auth/searchname?key=${key}&page=${page}&perpage=8`);
+    },
+    getAccount: (id) => {
+        return axios.get(`${baseUrl}/auth/${id}`);
+    },
+    updatePassword: (id, data) => {
+        return axios.put(`${baseUrl}/auth/${id}`, data);
+    },
+    deleteAccount: (id) => {
+        return axios.delete(`${baseUrl}/auth/${id}`)
+    },
 }
 
 export default api;
