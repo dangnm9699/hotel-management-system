@@ -66,7 +66,19 @@ class RoomInfomation extends React.Component {
         }
     }
 
+    getTimeString = (d) => {
+        return d.toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+        }).replace(" ", "T")
+    }
+
+
     changeTypeConfirm = () => {
+        this.context.setContext('checkInTime', this.getTimeString(new Date()))
         this.context.setContext('bookingType', "confirm")
     }
 
@@ -175,6 +187,10 @@ class RoomInfomation extends React.Component {
         return listOption
     }
 
+    formatMoney = (number) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+    }
+
     render() {
         //console.log(this.state.listRoomSelected)
         let listRoom = [];
@@ -216,7 +232,7 @@ class RoomInfomation extends React.Component {
                         <div className="col">
                             <div className="form-group">
                                 <label >Đơn giá</label>
-                                <input type="text" className="form-control" value={this.context.listRoomSelected[i].room.price * this.context.getDay()} readOnly />
+                                <input type="text" className="form-control" value={this.formatMoney(this.context.listRoomSelected[i].room.price * this.context.getDay())} readOnly />
                             </div>
                         </div>
                     </div>

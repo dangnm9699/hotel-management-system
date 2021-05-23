@@ -100,7 +100,7 @@ class CheckInAndCheckOut extends React.Component {
                             <div className="text-center font-weight-bold">
                                 Thời gian check-in
                             </div>
-                            <input type="datetime-local" className="form-control border-0 mb-3" onChange={this.changeCheckIn} value={this.context.checkInTime} />
+                            <input type="datetime-local" className="form-control border-0 mb-3" onChange={this.changeCheckIn} value={this.context.checkInTime} disabled={(this.context.bookingType === "confirm")} />
                         </div>
                     </div>
                     <div className="col-2 d-flex justify-content-center">

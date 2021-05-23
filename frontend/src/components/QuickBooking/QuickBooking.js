@@ -56,6 +56,10 @@ class QuickBooking extends React.Component {
         }
     }
 
+    componentDidMount() {
+        document.title = "MyHotel - Đặt phòng nhanh"
+    }
+
     setContext = (prop, value) => {
         let c = this.state.context;
         c[prop] = value;
@@ -92,11 +96,30 @@ class QuickBooking extends React.Component {
     }
 
     booking = async () => {
+        console.log(this.state)
         if (this.state.context.guestInformation.type === "null") {
             this.setState({ notificationShow: true, message: "Vui lòng nhập thông tin khách hàng" })
             return
         }
-        //TODO
+
+        let guest = this.state.context.guestInformation.guest
+        if (!guest.name) {
+            this.setState({ notificationShow: true, message: "Vui lòng nhập tên khách hàng" })
+            return
+        }
+        if (!guest.country) {
+            this.setState({ notificationShow: true, message: "Vui lòng nhập quốc gia" })
+            return
+        }
+        if (!guest.idNumber) {
+            this.setState({ notificationShow: true, message: "Vui lòng nhập số CMT/CCCD/Hộ chiếu" })
+            return
+        }
+        if (!guest.phonenumber) {
+            this.setState({ notificationShow: true, message: "Vui lòng nhập số điện thoại" })
+            return
+        }
+
         this.setState({ loading: true })
         try {
             let data = {
