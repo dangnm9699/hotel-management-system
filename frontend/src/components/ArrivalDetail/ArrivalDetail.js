@@ -28,7 +28,7 @@ class ArrivalDetail extends React.Component {
             extrachanges: 0,
             amountpaid: 0,
             discount: 0,
-            reservatio: "Confirm booking",
+            reservatio: "Giữ phòng",
             loading: true,
             modalShow: false,
             message: "",
@@ -82,12 +82,17 @@ class ArrivalDetail extends React.Component {
                 extrachanges: 0,
                 amountpaid: res.data.order.paid,
                 discount: 0,
-                reservatio: res.data.order.type === "confirm" ? "Confirm booking" : "Hold booking",
+                reservatio: res.data.order.type === "confirm" ? "Xác nhận" : "Giữ phòng",
+                room: res.data.rooms,
 
             })
         } catch (err) {
             console.log(err)
         }
+    }
+
+    formatMoney = (number) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     }
 
     checkin = async () => {
@@ -114,6 +119,24 @@ class ArrivalDetail extends React.Component {
         this.props.history.push('/checkin')
     }
 
+    getRoomList = () => {
+        let roomList = this.state.room
+        let list = [];
+        for (let i = 0; i < roomList.length; i++) {
+            list.push(
+                <tr key={i}>
+                    <td>{roomList[i].name}</td>
+                    <td>{roomList[i].type}</td>
+                    <td>{roomList[i].numAdult}</td>
+                    <td>{roomList[i].numChild}</td>
+                    <td>{this.formatMoney(roomList[i].price * this.state.nightStay)}</td>
+
+                </tr>
+            )
+        }
+        return list
+    }
+
     render() {
         if (this.state.loading) {
             return (
@@ -131,8 +154,8 @@ class ArrivalDetail extends React.Component {
                 <Notification show={this.state.modalShow} message={this.state.message} hideNotification={this.hideModal} />
                 <Loading show={this.state.modalLoading} />
                 <div className="row mt-3">
-                    <div className="col-3 h4">
-                    Danh sách khách đến {this.props.location.state.from && "- " + this.props.location.state.from}
+                    <div className="col-5 h4">
+                        Danh sách khách đến {this.props.location.state.from && "- " + this.props.location.state.from}
                     </div>
                     <div className="col-2 ml-auto text-center">
                         <button type="button" className="btn btn-primary" onClick={this.checkin}> Check In</button>
@@ -165,7 +188,7 @@ class ArrivalDetail extends React.Component {
                 <div className="row">
                     <div className="col text-center">
                         <div className="h5">
-                            Giờ đến: 
+                            Giờ đến:
                         </div>
                         <div>
                             {this.state.arrivingAt.toDateString()}
@@ -181,7 +204,7 @@ class ArrivalDetail extends React.Component {
                     </div>
                     <div className="col text-center">
                         <div className="h5">
-                            Ngày đên: 
+                            Ngày đêm:
                         </div>
                         <div>
                             {this.state.nightStay}
@@ -213,17 +236,42 @@ class ArrivalDetail extends React.Component {
                 <hr />
                 <div className="row">
                     <div className="col h3">
+                        Danh sách phòng đặt
+                    </div>
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col">
+                        <table className="table table-striped table-hover table-bordered" >
+                            <thead>
+                                <tr>
+                                    <th>Phòng</th>
+                                    <th>Loại phòng</th>
+                                    <th>Số người lớn</th>
+                                    <th>Số trẻ con</th>
+                                    <th>Giá tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.getRoomList()}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col h3">
                         Tổng quan
                     </div>
                 </div>
                 <div className="row">
                     <div className="col text-center">
-                        Tổng cộng: {this.state.totalchange} VND
+                        Tổng cộng: {this.formatMoney(this.state.totalchange)}
                     </div>
                     <div className="col text-center">
                     </div>
                     <div className="col text-center">
-                        Chưa thanh toán: {this.state.balance} VND
+                        Chưa thanh toán: {this.formatMoney(this.state.balance)}
                     </div>
                 </div>
                 <hr />
@@ -242,24 +290,24 @@ class ArrivalDetail extends React.Component {
                                             Tiền phòng:
                                     </td>
                                         <td>
-                                            {this.state.roomchanges} VND
-                                    </td>
+                                            {this.formatMoney(this.state.roomchanges)}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             Thuế:
                                     </td>
                                         <td>
-                                            {this.state.tax} VND
-                                    </td>
+                                            {this.formatMoney(this.state.tax)}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             Dịch vụ khác:
                                     </td>
                                         <td>
-                                            {this.state.extrachanges} VND
-                                    </td>
+                                            {this.formatMoney(this.state.extrachanges)}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -274,16 +322,16 @@ class ArrivalDetail extends React.Component {
                                             Đã thanh toán:
                                     </td>
                                         <td>
-                                            {this.state.amountpaid} VND
-                                    </td>
+                                            {this.formatMoney(this.state.amountpaid)}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             Giảm giá:
                                     </td>
                                         <td>
-                                            {this.state.discount} VND
-                                    </td>
+                                            {this.formatMoney(this.state.discount)}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

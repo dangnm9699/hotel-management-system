@@ -24,6 +24,7 @@ class DepartureList extends React.Component {
     }
 
     async componentDidMount() {
+        document.title = "MyHotel - Check Out"
         try {
             let res = await api.getOrderDepartureToday()
             this.setState({ list: res.data.data, pagination: res.data.pagination })
@@ -42,7 +43,7 @@ class DepartureList extends React.Component {
                 buttonTomorrow: "btn-secondary",
                 buttonThisWeek: "btn-secondary",
             },
-            type: "Today",
+            type: "Hôm nay",
             loading: true,
         })
         try {
@@ -64,7 +65,7 @@ class DepartureList extends React.Component {
                 buttonTomorrow: "btn-primary",
                 buttonThisWeek: "btn-secondary",
             },
-            type: "Tomorrow",
+            type: "Ngày mai",
             loading: true
         })
         try {
@@ -86,7 +87,7 @@ class DepartureList extends React.Component {
                 buttonTomorrow: "btn-secondary",
                 buttonThisWeek: "btn-primary",
             },
-            type: "This Week",
+            type: "Tuần này",
             loading: true,
         })
         try {
