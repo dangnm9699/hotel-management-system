@@ -366,7 +366,7 @@ class EditGuest extends React.Component {
                                             <option value="Uzbekistan">Uzbekistan</option>
                                             <option value="Vanuatu">Vanuatu</option>
                                             <option value="Venezuela">Venezuela</option>
-                                            <option value="Viet Nam">Việt Nam</option>
+                                            <option value="Việt Nam">Việt Nam</option>
                                             <option value="Virgin Islands, British">Virgin Islands, British</option>
                                             <option value="Virgin Islands, U.S.">Virgin Islands, U.S.</option>
                                             <option value="Wallis and Futuna">Wallis and Futuna</option>
