@@ -64,13 +64,17 @@ class CheckInAndCheckOut extends React.Component {
     }
 
     changeCheckIn = (e) => {
+        let now = new Date()
         let d1 = new Date(e.target.value)
+        if (d1 < now) {
+            d1 = now
+        }
         let d2 = new Date(this.context.checkOutTime)
         if (d1 > d2) {
             d2 = d1;
             this.context.setContext('checkOutTime', this.getTimeString(d2))
         }
-        this.context.setContext('checkInTime', e.target.value)
+        this.context.setContext('checkInTime', this.getTimeString(d1))
         this.reloadListRoomCandidate()
     }
 
