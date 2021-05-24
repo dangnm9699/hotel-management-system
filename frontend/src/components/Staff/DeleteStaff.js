@@ -84,7 +84,7 @@ class DeleteStaff extends React.Component {
                                 <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div><div className="container"></div>
                             <div className="modal-body">
-                                <p>Bạn có chắc chắn muốn xóa nhân viên <b>{this.state.data.name}</b>, <b>#{this.state.data.Id}</b> không?</p>
+                                <p>Bạn có chắc chắn muốn xóa nhân viên <strong>{this.state.data.name}</strong> không?</p>
                             </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary col-2" onClick={this.cancelDelete}>Hủy</button>
