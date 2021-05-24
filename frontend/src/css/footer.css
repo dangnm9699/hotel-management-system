@@ -9,6 +9,7 @@
     background-color: #252929;
     min-height: 250px;
     padding: 10px 0px 25px 0px;
+    min-width: 1120px;
 }
 
 .pt2 {
@@ -36,6 +37,9 @@
 
 .footer_ul_amrc li {
     padding: 0px 0px 5px 0px;
+}
+.footer .container {
+    min-width: 720px !important;
 }
 
 .footer_ul_amrc li a {
