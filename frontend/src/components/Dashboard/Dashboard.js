@@ -8,7 +8,7 @@ import SparkBox1 from './SparkBox1';
 import SparkBox2 from './SparkBox2';
 import SparkBox3 from './SparkBox3';
 import SparkBox4 from './SparkBox4';
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 export default class Dashboard extends React.Component {
     componentDidMount() {

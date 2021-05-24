@@ -105,8 +105,12 @@ export default class RoomStatusCountChart extends React.Component {
                         type="button"
                         className="btn dropdown-toggle col-md-4"
                         data-toggle="dropdown"
-                    ><b>{this.state.buttonText}</b></button>
-                    <div className="dropdown-menu">
+                    ><strong
+                        style={{
+                            whiteSpace: "normal"
+                        }}
+                    >{this.state.buttonText}</strong></button>
+                    <div className="dropdown-menu dropdown-menu-right" key={"RoomTypeDropDown"}>
                         <div className="dropdown-item" onClick={() => this.onClick("All", "Tất cả")}>Tất cả</div>
                         <div className="dropdown-item" onClick={() => this.onClick("Standard", "Standard")}>Standard</div>
                         <div className="dropdown-item" onClick={() => this.onClick("Deluxe", "Deluxe")}>Deluxe</div>

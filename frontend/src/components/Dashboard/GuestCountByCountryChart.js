@@ -123,7 +123,11 @@ export default class GuestCountByCountryChart extends React.Component {
         for (let i = 0; i < 5; i++) {
             let text = new Date().getFullYear() - i;
             menu.push(
-                <div className="dropdown-item" onClick={() => this.onClick(text)}>{text}</div>
+                <div
+                    className="dropdown-item"
+                    onClick={() => this.onClick(text)}
+                    key={text}
+                >{text}</div>
             );
         }
         return (
