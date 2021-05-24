@@ -166,6 +166,11 @@ class QuickBooking extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/quickbooking' } }}
+            ></Redirect>
+        }
         if (this.state.reload) {
             this.state.reload = false
             return (<Redirect to='/quickbooking' />)

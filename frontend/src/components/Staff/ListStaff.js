@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import api from '../../Api/api'
 import Page500 from '../Page500/Page500'
 import '../../css/liststaff.css'
@@ -130,6 +130,14 @@ class ListStaff extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/staff' } }}
+            ></Redirect>
+        }
+        if(this.props.user.acctype !== 'Quản trị viên'){
+            return <Redirect to="/dashboard"></Redirect>
+        }
         if (this.state.serverError === true) {
             return <Page500 />
         }

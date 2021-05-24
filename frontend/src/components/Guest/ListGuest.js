@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import api from '../../Api/api'
 import Page500 from '../Page500/Page500'
 import '../../css/listguest.css'
@@ -124,6 +124,11 @@ export default class ListGuest extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/guest' } }}
+            ></Redirect>
+        }
         if (this.state.serverError === true) {
             return <Page500 />
         }

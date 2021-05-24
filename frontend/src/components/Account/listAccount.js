@@ -1,11 +1,11 @@
 import React from 'react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import api from '../../Api/api'
 import Page500 from '../Page500/Page500'
 import '../../css/liststaff.css'
 import DetailAccount from './detailAccount'
-// import EditStaff from './EditStaff'
+import EditAccount from './editAccount'
 import DeleteAccount from './deleteAccount'
 import Paginator from '../Paginator/paginator'
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
@@ -134,6 +134,14 @@ class ListAccount extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/accountmanager' } }}
+            ></Redirect>
+        }
+        if(this.props.user.acctype !== 'Quản trị viên'){
+            return <Redirect to="/dashboard"></Redirect>
+        }
         if (this.state.serverError === true) {
             return <Page500 />
         }
@@ -153,7 +161,7 @@ class ListAccount extends React.Component {
             accountList.push(
                 <div className="row text-center" key={-2}>
                     <div className="col" style={{ marginTop: '54px' }}>
-                        <h3>Chưa có nhân viên nào</h3>
+                        <h3>Chưa có tài khoản nào</h3>
                     </div>
                 </div>
             )
@@ -162,7 +170,7 @@ class ListAccount extends React.Component {
             accountList.push(
                 <div className="short-post staff row" key={index}>
                     <a>
-                        <img src={'/key.png'} alt="Room views" style={{ imageResolution: '300dpi' }} width="180px" />
+                        <img src={'/key2.png'} alt="Room views" style={{ imageResolution: '300dpi' }} width="140px" />
                     </a>
                     <div className="short-info staff" style={{lineHeight: '48px'}}>
                         <a>
@@ -170,7 +178,7 @@ class ListAccount extends React.Component {
                         </a>
                         <div className="owner-option row">
                             <DetailAccount reloadpage={this.reloadPage} aid={account.Id} />
-                            {/* <EditStaff reloadpage={this.reloadPage} sid={staff.Id} /> */}
+                            <EditAccount reloadpage={this.reloadPage} aid={account.Id} />
                             <DeleteAccount reloadpage={this.reloadPage} aid={account.Id} />
                         </div>
                         <p><b>loại tài khoản:</b> {account.acctype}</p>

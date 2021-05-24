@@ -3,6 +3,7 @@ import api from '../../Api/api';
 import Departure from './Departure'
 import Paginator from '../Paginator/paginator'
 import '../../css/departurelist.css'
+import {Redirect} from 'react-router-dom'
 
 class DepartureList extends React.Component {
     constructor(props) {
@@ -131,6 +132,11 @@ class DepartureList extends React.Component {
 
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/checkout' } }}
+            ></Redirect>
+        }
         let listOrder = [];
         if (this.state.loading) {
             listOrder = (

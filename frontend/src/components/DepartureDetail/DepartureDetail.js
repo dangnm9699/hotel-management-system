@@ -2,7 +2,7 @@ import React from 'react';
 import api from '../../Api/api';
 import { Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-
+import {Redirect} from 'react-router-dom'
 
 class DepartureDetail extends React.Component {
     constructor(props) {
@@ -138,6 +138,11 @@ class DepartureDetail extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/checkout' } }}
+            ></Redirect>
+        }
         if (this.state.loading) {
             return (
                 <div className="container-fluid d-flex justify-content-center">

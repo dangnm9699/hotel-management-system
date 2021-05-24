@@ -3,6 +3,7 @@ import api from '../../Api/api';
 import InHouse from './InHouse'
 import Paginator from '../Paginator/paginator'
 import '../../css/departurelist.css'
+import {Redirect} from 'react-router-dom'
 
 class InHouseList extends React.Component {
     constructor(props) {
@@ -43,6 +44,11 @@ class InHouseList extends React.Component {
 
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/inhouse' } }}
+            ></Redirect>
+        }
         let listOrder = [];
         if (this.state.loading) {
             listOrder = (

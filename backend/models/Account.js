@@ -25,7 +25,7 @@ exports.updateAccount = async function (id, data) {
 }
 
 exports.deleteAccount = async function (id) {
-  return knex('account').where('Id', id).del()
+  return knex('account').where('account.Id', id).del()
 }
 
 exports.dropTable = async function () {
@@ -51,4 +51,7 @@ exports.getAccountById = async function (id) {
   return knex('account').where('account.Id', id).leftJoin('NV', 'account.NVID', 'NV.Id').select(['account.Id', 'account.username',
   'account.acctype', 'account.NVID', 'NV.name', 'NV.role', 'NV.address', 'NV.birthday',
    'NV.idNumber', 'NV.description', 'NV.phonenumber', 'NV.status']).first()
+}
+exports.changePassword = async function (Id, newPassword) {
+  return knex('account').where('Id', Id).update('password', newPassword)
 }

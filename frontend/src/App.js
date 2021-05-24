@@ -49,12 +49,16 @@ class App extends React.Component {
 
 
   render() {
+    let menu = ''
+    if (this.state.user) {
+      menu = <Menu setPage={this.setPage} user={this.state.user} />
+    }
     return (
       <div className="wrapper">
         <Header user={this.state.user} setToken={this.setToken} />
         <div className='content-wrapper'>
           <BrowserRouter>
-            <Menu setPage={this.setPage} />
+            {menu}
             <Switch>
               <Route path="/dashboard" render={(props) => <Dashboard user={this.state.user} />} />
               <Route path="/login" render={(props) => <Login setToken={this.setToken} user={this.state.user} {...props} />} />

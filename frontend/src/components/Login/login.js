@@ -41,7 +41,7 @@ export default class Login extends React.Component {
     if (this.state.successLogin === true) {
       let returnPage = '/dashboard'
       if (this.props.location.state && this.props.location.state.from) {
-        returnPage = this.location.state.from
+        returnPage = this.props.location.state.from
       }
       return <Redirect to={returnPage}></Redirect>
     }

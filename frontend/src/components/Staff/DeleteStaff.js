@@ -7,6 +7,7 @@ class DeleteStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            modal: {},
             data: {
                 Id: '',
                 name: '',
@@ -15,6 +16,12 @@ class DeleteStaff extends React.Component {
                 description: ''
             },
         }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        let modal = {}
+        modal.formId = "modalDeleteForm" + props.sid;
+        return { modal };
     }
 
     openDeleteForm = async () => {
@@ -26,7 +33,7 @@ class DeleteStaff extends React.Component {
                 let data = { ...this.state.data }
                 data.birthday = data.birthday.split("T")[0];
                 this.setState({ data })
-                $('#modalDeleteForm').modal('show');
+                $('#' + this.state.modal.formId).modal('show');
             } else {
                 alert(res.status);
             }
@@ -36,23 +43,27 @@ class DeleteStaff extends React.Component {
     }
 
     cancelDelete = () => {
-        $('#modalDeleteForm').modal('hide');
+        $('#' + this.state.modal.formId).modal('hide');
     }
 
     applyDelete = async () => {
+        let content = '';
+
         try {
             let res = await api.deleteStaff(this.props.sid);
             if (res.status === 200) {
                 console.log(res.status, res.data);
-                $('#modalDeleteForm').modal('hide');
-                $('#alert-content').html('Xoá nhân viên thành công!')
-                $('#alert').modal('show')
+                $('#' + this.state.modal.formId).modal('hide');
+                content = 'Xóa nhân viên thành công!';
             } else {
-                $('#alert-content').html('Đã xảy ra lỗi, vui lòng thử lại sau!')
-                $('#alert').modal('show')
+                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
             }
         } catch (e) {
-            alert(e);
+            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+        } finally {
+            $('#alert-content').html(content);
+            $('#alert').modal('show');
+            await this.props.reloadpage();
         }
     }
 
@@ -65,7 +76,7 @@ class DeleteStaff extends React.Component {
                     onClick={this.openDeleteForm}
                 ><i className="fa fa-trash" aria-hidden="true"></i>&nbsp; Xoá</button>
 
-                <div className="modal fade" id="modalDeleteForm" data-keyboard="false" data-backdrop="static">
+                <div className="modal fade" id={this.state.modal.formId} data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">

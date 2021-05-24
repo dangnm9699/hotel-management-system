@@ -3,6 +3,7 @@ import api from '../../Api/api';
 import Arrival from './Arrival'
 import Paginator from '../Paginator/paginator'
 import '../../css/departurelist.css'
+import {Redirect} from 'react-router-dom'
 
 class ArrivalList extends React.Component {
     constructor(props) {
@@ -131,6 +132,11 @@ class ArrivalList extends React.Component {
 
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/checkin' } }}
+            ></Redirect>
+        }
         let listOrder = [];
         if (this.state.loading) {
             listOrder = (

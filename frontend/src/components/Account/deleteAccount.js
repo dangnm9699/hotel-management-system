@@ -27,7 +27,7 @@ class DeleteAccount extends React.Component {
                 }
                 this.setState({ data: res.data.data });
 
-                $('#modalDeleteForm').modal('show');
+                $("#modalDeleteForm" + this.props.aid).modal('show');
             } else {
                 alert(res.status);
             }
@@ -37,7 +37,7 @@ class DeleteAccount extends React.Component {
     }
 
     cancelDelete = () => {
-        $('#modalDeleteForm').modal('hide');
+        $("#modalDeleteForm" + this.props.aid).modal('hide');
     }
 
     applyDelete = async () => {
@@ -45,7 +45,7 @@ class DeleteAccount extends React.Component {
             let res = await api.deleteAccount(this.props.aid);
             if (res.status === 200) {
                 console.log(res.status, res.data);
-                $('#modalDeleteForm').modal('hide');
+                $("#modalDeleteForm" + this.props.aid).modal('hide');
                 $('#alert-content').html('Xoá tài khoản thành công!')
                 $('#alert').modal('show')
             } else {
@@ -66,7 +66,7 @@ class DeleteAccount extends React.Component {
                     onClick={this.openDeleteForm}
                 ><i className="fa fa-trash" aria-hidden="true"></i>&nbsp; Xoá</button>
 
-                <div className="modal fade" id="modalDeleteForm">
+                <div className="modal fade" id={"modalDeleteForm" + this.props.aid}>
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">

@@ -211,6 +211,9 @@ const api = {
     deleteAccount: (id) => {
         return axios.delete(`${baseUrl}/auth/${id}`)
     },
+    searchAllStaffByName: (key)=>{
+        return axios.get(`${baseUrl}/staff/search?key=${key}&page=1`);
+    }
 }
 
 export default api;

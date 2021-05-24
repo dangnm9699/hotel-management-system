@@ -138,8 +138,8 @@ class EditGuest extends React.Component {
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <button className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
-                                    <button className="btn btn-primary col-2" type="submit">Cập nhật</button>
+                                    <button type="button" className="btn btn-secondary col-2" onClick={this.openCancel}>Hủy</button>
+                                    <button type="submit" className="btn btn-primary col-2">Cập nhật</button>
                                 </div>
                             </form>
                         </div>

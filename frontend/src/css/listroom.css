@@ -148,6 +148,9 @@ div.short-post.row{
     border: solid 1px #90caf9;
     color: #fff !important;
 }
+/* .btn-edit{
+    color: white !important;
+} */
 .disable{
     color: #9E9E9E;
     pointer-events: none;

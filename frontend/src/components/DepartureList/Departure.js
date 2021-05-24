@@ -51,12 +51,12 @@ class Departure extends React.Component {
                 <div className="col-3">
                     <div className="row align-items-center justify-content-center h-50">
                         <div className="col-8  border text-center d-flex flex-column justify-content-center h-75">
-                            {this.state.arrivingAt.getDate()}
+                            {this.state.arrivingAt.toLocaleDateString()}
                         </div>
                     </div>
                     <div className="row align-items-center justify-content-center h-50">
                         <div className="col-8  border text-center d-flex flex-column justify-content-center h-75">
-                            {this.state.leavingAt.getDate()}
+                            {this.state.leavingAt.toLocaleDateString()}
                         </div>
                     </div>
                 </div>

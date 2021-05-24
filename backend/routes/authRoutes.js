@@ -14,5 +14,6 @@ authRouter.delete('/:id', authController.deleteAccount)
 authRouter.post('/register', authController.register)
 authRouter.get('/', authController.getAccountList)
 authRouter.get('/checkAuth', authController.checkAuth)
+authRouter.put('/:id', authController.changePassword)
 authRouter.use(notFound);
 module.exports = authRouter

@@ -121,8 +121,8 @@ exports.getAccountList = async function(req, res){
 }
 exports.getAccount = async function (req, res) {
     try {
-        let staff = await Account.getAccountById(req.params.id)
-        if (!staff) {
+        let account = await Account.getAccountById(req.params.id)
+        if (!account) {
             res.status(404).json({
                 success: false,
                 message: "Account not found"
@@ -131,7 +131,7 @@ exports.getAccount = async function (req, res) {
         }
         res.json({
             success: true,
-            data: staff,
+            data: account,
         })
     } catch (err) {
         console.log(err)
@@ -204,6 +204,30 @@ exports.searchUsername = async function (req, res) {
         let result = await Account.searchUsername(page, perpage, key)
         result.success = true
         res.json(result)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            err,
+        })
+    }
+}
+
+exports.changePassword = async function (req, res) {
+    try {
+        let newPassword = await bcrypt.hash(req.body.password, config.saltRounds)
+        let count = await Account.changePassword(req.params.id, newPassword)
+        if (count == 0) {
+            res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+            return
+        }
+        res.json({
+            success: true,
+            count
+        })
     } catch (err) {
         console.log(err)
         res.status(500).json({

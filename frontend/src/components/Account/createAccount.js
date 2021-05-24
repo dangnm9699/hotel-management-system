@@ -86,6 +86,14 @@ export default class CreateAccount extends React.Component {
         this.setState({ modalShow: false })
     }
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/createstaffaccount' } }}
+            ></Redirect>
+        }
+        if(this.props.user.acctype !== 'Quản trị viên'){
+            return <Redirect to="/dashboard"></Redirect>
+        }
         if (this.state.serverError === true) {
             return <Page500 />;
         }

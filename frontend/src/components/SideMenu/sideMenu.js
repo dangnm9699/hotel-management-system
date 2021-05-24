@@ -12,14 +12,13 @@ import '../../scss/sideMenu.scss';
 class SideMenu extends React.Component {
   constructor(props) {
     super(props)
-    let currentLocation = window.location.pathname.slice(1)
+
     this.state = {
       image: '',
       collapsed: false,
       rtl: false,
       toggled: true,
       handleToggleSidebar: false,
-      menuSelected: currentLocation !== '' ? currentLocation : 'dashboard',
     }
   }
   collapseMenu = (e) => {
@@ -38,6 +37,52 @@ class SideMenu extends React.Component {
 
   }
   render() {
+    let currentLocation = window.location.pathname.slice(1)
+    let acctype = this.props.user.acctype;
+    var room, staff, timekeeping, accountmanager;
+    if (acctype === 'Quản trị viên') {
+      room = <MenuItem icon={<AiOutlineHome />}
+        active={true}
+        value='room'
+        active={currentLocation === 'room' ? true : false}
+        onClick={e => this.selectMenu(e)}>
+        {'Quản lý phòng'}
+      </MenuItem>;
+      staff = <MenuItem icon={<IoAccessibility />}
+        value='staff'
+        active={currentLocation === 'staff' ? true : false}
+        onClick={e => this.selectMenu(e)}
+      >
+        {'Quản lý nhân viên'}
+      </MenuItem>;
+      timekeeping = <MenuItem icon={<AiFillClockCircle />}
+        value='timekeeping'
+        active={currentLocation === 'timekeeping' ? true : false}
+        onClick={e => this.selectMenu(e)}
+      >
+        {'Chấm công nhân viên'}
+      </MenuItem>;
+      accountmanager = <SubMenu icon={<MdVpnKey />}
+        title={'Quản lý các tài khoản'}
+        iconshape="circle"
+      >
+        <MenuItem
+          value='createstaffaccount'
+          active={currentLocation === 'createstaffaccount' ? true : false}
+          onClick={e => this.selectMenu(e)}
+        >
+          {'Cấp tài khoản nhân viên'}
+        </MenuItem>
+
+        <MenuItem
+          value='accountmanager'
+          active={currentLocation === 'accountmanager' ? true : false}
+          onClick={e => this.selectMenu(e)}
+        >
+          {'Danh sách tài khoản '}
+        </MenuItem>
+      </SubMenu>;
+    }
     return (
       <ProSidebar
         image={this.state.image ? '' : false}
@@ -78,35 +123,23 @@ class SideMenu extends React.Component {
               icon={<FaTachometerAlt />}
               suffix={<span className="badge red">{'New'}</span>}
               value='dashboard'
-              active={this.state.menuSelected === 'dashboard' ? true : false}
+              active={currentLocation === 'dashboard' ? true : false}
               onClick={e => this.selectMenu(e)}
             >
               {'Tổng quan'}
             </MenuItem>
-            <MenuItem icon={<AiOutlineHome />}
-              active={true}
-              value='room'
-              active={this.state.menuSelected === 'room' ? true : false}
-              onClick={e => this.selectMenu(e)}>
-              {'Quản lý phòng'}
-            </MenuItem>
+            {room}
             <MenuItem icon={<BsPeopleCircle />}
               active={true}
               value='guest'
-              active={this.state.menuSelected === 'guest' ? true : false}
+              active={currentLocation === 'guest' ? true : false}
               onClick={e => this.selectMenu(e)}>
               {'Quản lý khách hàng'}
             </MenuItem>
-            <MenuItem icon={<IoAccessibility />}
-              value='staff'
-              active={this.state.menuSelected === 'staff' ? true : false}
-              onClick={e => this.selectMenu(e)}
-            >
-              {'Quản lý nhân viên'}
-            </MenuItem>
+            {staff}
             <MenuItem icon={<BsFillLightningFill />}
               value='quickbooking'
-              active={this.state.menuSelected === 'quickbooking' ? true : false}
+              active={currentLocation === 'quickbooking' ? true : false}
               onClick={e => this.selectMenu(e)}
             >
               {'Đặt phòng nhanh'}
@@ -118,47 +151,22 @@ class SideMenu extends React.Component {
             >
               <MenuItem
                 value='checkin'
-                active={this.state.menuSelected === 'checkin' ? true : false}
+                active={currentLocation === 'checkin' ? true : false}
                 onClick={e => this.selectMenu(e)}
               >{'Check in'}</MenuItem>
               <MenuItem
                 value='inhouse'
-                active={this.state.menuSelected === 'inhouse' ? true : false}
+                active={currentLocation === 'inhouse' ? true : false}
                 onClick={e => this.selectMenu(e)}
               >{'Khách đang ở'}</MenuItem>
               <MenuItem
                 value='checkout'
-                active={this.state.menuSelected === 'checkout' ? true : false}
+                active={currentLocation === 'checkout' ? true : false}
                 onClick={e => this.selectMenu(e)}
               >{'Check out'}</MenuItem>
             </SubMenu>
-            <MenuItem icon={<AiFillClockCircle />}
-              value='timekeeping'
-              active={this.state.menuSelected === 'timekeeping' ? true : false}
-              onClick={e => this.selectMenu(e)}
-            >
-              {'Chấm công nhân viên'}
-            </MenuItem>
-            <SubMenu icon={<MdVpnKey />}
-              title={'Quản lý các tài khoản'}
-              iconshape="circle"
-            >
-              <MenuItem
-                value='createstaffaccount'
-                active={this.state.menuSelected === 'createstaffaccount' ? true : false}
-                onClick={e => this.selectMenu(e)}
-              >
-              {'Cấp tài khoản nhân viên'}
-              </MenuItem>
-              
-              <MenuItem
-                value='accountmanager'
-                active={this.state.menuSelected === 'accountmanager' ? true : false}
-                onClick={e => this.selectMenu(e)}
-              >
-                {'Danh sách tài khoản '}
-              </MenuItem>
-            </SubMenu>
+            {timekeeping}
+            {accountmanager}
 
           </Menu>
           {/* <Menu iconShape="circle">

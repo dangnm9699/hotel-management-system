@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import Paginator from '../Paginator/paginator'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { Redirect } from 'react-router-dom'
 
 class TimeKeeping extends React.Component {
     constructor(props) {
@@ -205,6 +205,14 @@ class TimeKeeping extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/timekeeping' } }}
+            ></Redirect>
+        }
+        if (this.props.user.acctype !== 'Quản trị viên') {
+            return <Redirect to="/dashboard"></Redirect>
+        }
         if (this.state.loading) {
             return (
                 <div className="container-fluid d-flex justify-content-center">
@@ -286,7 +294,6 @@ class Loading extends React.Component {
         }
     }
     render() {
-
         return (
             <Modal show={this.props.show} backdrop="static">
                 <Modal.Body >

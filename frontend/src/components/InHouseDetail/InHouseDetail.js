@@ -1,7 +1,7 @@
 import React from 'react';
 import api from '../../Api/api';
 import { Modal } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { data } from 'jquery';
 
 
@@ -119,6 +119,11 @@ class InHouseDetail extends React.Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect
+                to={{ pathname: "/login", state: { from: '/inhouse' } }}
+            ></Redirect>
+        }
         if (this.state.loading) {
             return (
                 <div className="container-fluid d-flex justify-content-center">
@@ -364,7 +369,6 @@ class Loading extends React.Component {
         }
     }
     render() {
-
         return (
             <Modal show={this.props.show} backdrop="static">
                 <Modal.Body >

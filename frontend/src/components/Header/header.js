@@ -27,7 +27,7 @@ export default class Header extends React.Component {
         return (
             <div className="header">
                 <div className="Logo">
-                    <a className="home" style={{    marginTop: 0}} href="/">
+                    <a className="home" style={{    marginTop: 0}} href="/dashboard">
                         <p className="logo-name"><i className="fas fa-home"></i>&nbsp;MyHotel</p>
                     </a>
                 </div>
