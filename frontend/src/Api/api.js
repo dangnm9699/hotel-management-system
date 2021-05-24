@@ -1,6 +1,6 @@
 import axios from "axios";
 import Page500 from "../components/Page500/Page500";
-const baseUrl = "http://localhost:3001";
+const baseUrl = "http://20.188.120.110:3000";
 //request interceptor to add the auth token header to requests
 axios.interceptors.request.use(
     (config) => {
@@ -28,8 +28,8 @@ axios.interceptors.response.use(
         const originalRequest = error.config;
         console.log("origianlRequest: ", JSON.stringify(originalRequest))
         if (
-            error.response.status === 401 && originalRequest.url !== "http://localhost:3001/auth/refresh_token" &&
-            originalRequest.url !== "http://localhost:3001/auth/login" &&
+            error.response.status === 401 && originalRequest.url !== baseUrl+ "/auth/refresh_token" &&
+            originalRequest.url !==  baseUrl + "/auth/login" &&
             !originalRequest._retry
         ) {
             originalRequest._retry = true;
