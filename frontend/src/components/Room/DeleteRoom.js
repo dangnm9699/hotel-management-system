@@ -8,14 +8,14 @@ class DeleteRoom extends React.Component {
         super(props);
         this.state = {
             data: {
-                Id: '',
-                name: '',
-                type: '',
-                status: '',
-                maxchild: '',
-                maxadult: '',
-                description: '',
-                price: ''
+                "Id": '',
+                "name": '',
+                "type": '',
+                "status": '',
+                "maxchild": '',
+                "maxadult": '',
+                "description": '',
+                "price": ''
             },
         }
     }
@@ -46,21 +46,20 @@ class DeleteRoom extends React.Component {
     }
 
     applyDelete = async () => {
-        let content = '';
         try {
             let res = await api.deleteRoom(this.props.rid)
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.formId).modal('hide');
-                content = 'Xóa phòng thành công!';
+                $('#alert-content').html('Xóa phòng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }

@@ -8,14 +8,14 @@ class DetailRoom extends React.Component {
         this.state = {
             modal: {},
             data: {
-                Id: '',
-                name: '',
-                type: '',
-                status: '',
-                maxchild: '',
-                maxadult: '',
-                description: '',
-                price: ''
+                "Id": '',
+                "name": '',
+                "type": '',
+                "status": '',
+                "maxchild": '',
+                "maxadult": '',
+                "description": '',
+                "price": ''
             },
         }
     }

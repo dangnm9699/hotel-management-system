@@ -10,12 +10,12 @@ class DetailGuest extends React.Component {
         this.state = {
             modal: {},
             data: {
-                Id: '',
-                name: '',
-                phonenumber: '',
-                email: '',
-                country: '',
-                idNumber: ''
+                "Id": '',
+                "name": '',
+                "phonenumber": '',
+                "email": '',
+                "country": '',
+                "idNumber": ''
             }
         }
     }

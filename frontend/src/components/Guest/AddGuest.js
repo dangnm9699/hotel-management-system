@@ -8,7 +8,13 @@ class AddGuest extends React.Component {
         super(props);
 
         this.state = {
-            data: {}
+            data: {
+                "name": '',
+                "phonenumber": '',
+                "email": '',
+                "country": '',
+                "idNumber": ''
+            }
         }
     }
 
@@ -46,23 +52,30 @@ class AddGuest extends React.Component {
     }
 
     acceptApply = async () => {
-        let content = '';
         try {
             let res = await api.createGuest(this.state.data);
             if (res.status === 200) {
                 console.log(res.status, res.data)
-                this.setState({ data: {} })
+                this.setState({
+                    data: {
+                        "name": '',
+                        "phonenumber": '',
+                        "email": '',
+                        "country": '',
+                        "idNumber": ''
+                    }
+                })
                 $('#modalAddApply').modal('hide');
                 $('#modalAddForm').modal('hide');
-                content = 'Thêm khách hàng thành công!';
+                $('#alert-content').html('Thêm khách hàng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }
@@ -91,23 +104,23 @@ class AddGuest extends React.Component {
                                 <div className="modal-body">
                                     <div className="form-group">
                                         <label>Tên khách hàng</label>
-                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên khách hàng" required />
+                                        <input value={this.state.data.name} name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên khách hàng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Số điện thoại</label>
-                                        <input name="phonenumber" onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại khách hàng" required />
+                                        <input value={this.state.data.phonenumber} name="phonenumber" onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại khách hàng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Email</label>
-                                        <input name="email" onChange={this.myChangeHandler} type="email" className="form-control" placeholder="Nhập email khách hàng" required />
+                                        <input value={this.state.data.email} name="email" onChange={this.myChangeHandler} type="email" className="form-control" placeholder="Nhập email khách hàng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Quốc gia</label>
-                                        <input name="country" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập quốc gia khách hàng" required />
+                                        <input value={this.state.data.country} name="country" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập quốc gia khách hàng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Số CMND/CCCD</label>
-                                        <input name="idNumber" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập CMND/CCCD khách hàng" required />
+                                        <input value={this.state.data.idNumber} name="idNumber" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập CMND/CCCD khách hàng" required />
                                     </div>
                                 </div>
                                 <div className="modal-footer">

@@ -8,14 +8,14 @@ class EditRoom extends React.Component {
         this.state = {
             modal: {},
             data: {
-                Id: '',
-                name: '',
-                type: '',
-                status: '',
-                maxchild: '',
-                maxadult: '',
-                description: '',
-                price: ''
+                "Id": '',
+                "name": '',
+                "type": '',
+                "status": '',
+                "maxchild": '',
+                "maxadult": '',
+                "description": '',
+                "price": ''
             },
         }
     }
@@ -74,22 +74,21 @@ class EditRoom extends React.Component {
     }
 
     acceptApply = async () => {
-        let content = '';
         try {
             let res = await api.updateRoom(this.props.rid, this.state.data);
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.applyId).modal('hide');
                 $('#' + this.state.modal.formId).modal('hide');
-                content = 'Cập nhật phòng thành công!';
+                $('#alert-content').html('Cập phòng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }
@@ -158,7 +157,7 @@ class EditRoom extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
-                                        <textarea name="description" value={this.state.data.description} onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả" required></textarea>
+                                        <textarea name="description" value={this.state.data.description} onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả" ></textarea>
                                     </div>
                                 </div>
                                 <div className="modal-footer">

@@ -9,12 +9,12 @@ class DeleteGuest extends React.Component {
         this.state = {
             modal: {},
             data: {
-                Id: '',
-                name: '',
-                phonenumber: '',
-                email: '',
-                country: '',
-                idNumber: '',
+                "Id": '',
+                "name": '',
+                "phonenumber": '',
+                "email": '',
+                "country": '',
+                "idNumber": '',
             },
         }
     }
@@ -45,21 +45,20 @@ class DeleteGuest extends React.Component {
     }
 
     applyDelete = async () => {
-        let content = '';
         try {
             let res = await api.deleteGuest(this.props.gid);
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.formId).modal('hide');
-                content = 'Xóa khách hàng thành công!';
+                $('#alert-content').html('Xóa khách hàng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }

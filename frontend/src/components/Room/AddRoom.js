@@ -10,8 +10,13 @@ class AddRoom extends React.Component {
 
         this.state = {
             data: {
-                status: "Trống",
-                type: "Standard"
+                "name": '',
+                "type": 'Standard',
+                "status": "Trống",
+                "maxchild": '',
+                "maxadult": '',
+                "description": '',
+                "price": ''
             },
         }
     }
@@ -50,23 +55,32 @@ class AddRoom extends React.Component {
     }
 
     acceptApply = async () => {
-        let content = '';
         try {
             let res = await api.createRoom(this.state.data);
             if (res.status === 200) {
                 console.log(res.status, res.data)
-                this.setState({ data: {} })
+                this.setState({
+                    data: {
+                        "name": '',
+                        "type": 'Standard',
+                        "status": "Trống",
+                        "maxchild": '',
+                        "maxadult": '',
+                        "description": '',
+                        "price": ''
+                    }
+                })
                 $('#modalAddApply').modal('hide');
                 $('#modalAddForm').modal('hide');
-                content = 'Thêm phòng thành công!';
+                $('#alert-content').html('Thêm phòng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }
@@ -97,12 +111,12 @@ class AddRoom extends React.Component {
                                 <div className="modal-body">
                                     <div className="form-group">
                                         <label>Tên phòng</label>
-                                        <input name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" required />
+                                        <input value={this.state.data.name} name="name" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập tên phòng" required />
                                     </div>
                                     <div className="row">
                                         <div className="col form-group">
                                             <label>Loại phòng</label>
-                                            <select name="type" onChange={this.myChangeHandler} className="form-control">
+                                            <select value={this.state.data.type} name="type" onChange={this.myChangeHandler} className="form-control">
                                                 <option value="Standard" selected>Standard</option>
                                                 <option value="Deluxe">Deluxe</option>
                                                 <option value="Superior">Superior</option>
@@ -112,7 +126,7 @@ class AddRoom extends React.Component {
                                         </div>
                                         <div className="col form-group">
                                             <label>Trạng thái</label>
-                                            <select name="status" onChange={this.myChangeHandler} className="form-control">
+                                            <select value={this.state.data.status} name="status" onChange={this.myChangeHandler} className="form-control">
                                                 <option value="Đang sử dụng">Đang sử dụng</option>
                                                 <option value="Đã đặt trước">Đã đặt trước</option>
                                                 <option value="Trống" selected>Trống</option>
@@ -122,20 +136,20 @@ class AddRoom extends React.Component {
                                     <div className="row">
                                         <div className="col form-group">
                                             <label>Giới hạn người lớn</label>
-                                            <input name="maxadult" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" required />
+                                            <input value={this.state.data.maxadult} name="maxadult" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn người lớn" min="1" required />
                                         </div>
                                         <div className="col form-group">
                                             <label>Giới hạn trẻ em</label>
-                                            <input name="maxchild" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" required />
+                                            <input value={this.state.data.maxchild} name="maxchild" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giới hạn trẻ em" min="0" required />
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label>Giá phòng</label>
-                                        <input name="price" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập giá phòng" required />
+                                        <input value={this.state.data.price} name="price" onChange={this.myChangeHandler} type="number" className="form-control" placeholder="Nhập giá phòng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Mô tả</label>
-                                        <textarea name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả" required></textarea>
+                                        <textarea value={this.state.data.description} name="description" onChange={this.myChangeHandler} className="form-control" rows="3" placeholder="Nhập mô tả"></textarea>
                                     </div>
                                 </div>
                                 <div className="modal-footer">

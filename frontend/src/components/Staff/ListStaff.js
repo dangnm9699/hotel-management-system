@@ -135,7 +135,7 @@ class ListStaff extends React.Component {
                 to={{ pathname: "/login", state: { from: '/staff' } }}
             ></Redirect>
         }
-        if(this.props.user.acctype !== 'Quản trị viên'){
+        if (this.props.user.acctype !== 'Quản trị viên') {
             return <Redirect to="/dashboard"></Redirect>
         }
         if (this.state.serverError === true) {
@@ -160,11 +160,11 @@ class ListStaff extends React.Component {
         this.state.data.forEach((staff, index) => {
             staffList.push(
                 <div className="short-post staff row" key={index}>
-                    <a href="/>">
+                    <a>
                         <img src={'/staff.png'} alt="Room views" style={{ imageResolution: '300dpi' }} width="180px" />
                     </a>
                     <div className="short-info staff">
-                        <a href="/detailpost?postid=<?php echo $post->postid ?>">
+                        <a>
                             <p className="contest-name">{staff.name}</p>
                         </a>
                         <div className="owner-option row">

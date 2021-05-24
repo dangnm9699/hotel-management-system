@@ -8,12 +8,12 @@ class EditGuest extends React.Component {
         this.state = {
             modal: {},
             data: {
-                Id: '',
-                name: '',
-                phonenumber: '',
-                email: '',
-                country: '',
-                idNumber: '',
+                "Id": '',
+                "name": '',
+                "phonenumber": '',
+                "email": '',
+                "country": '',
+                "idNumber": '',
             },
         }
     }
@@ -72,22 +72,21 @@ class EditGuest extends React.Component {
     }
 
     acceptApply = async () => {
-        let content = '';
         try {
             let res = await api.updateGuest(this.props.gid, this.state.data);
             if (res.status === 200) {
                 console.log(res.status, res.data);
                 $('#' + this.state.modal.applyId).modal('hide');
                 $('#' + this.state.modal.formId).modal('hide');
-                content = 'Cập nhật khách hàng thành công!';
+                $('#alert-content').html('Cập khách hàng thành công!');
+                $('#alert').modal('show');
             } else {
-                content = 'Có lỗi xảy ra, vui lòng thử lại sau!';
+                $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
+                $('#alert').modal('show');
             }
         } catch (e) {
-            content = 'Sập chưa, chưa sập à, sắp sập rồi đấy!'
+            alert(e);
         } finally {
-            $('#alert-content').html(content);
-            $('#alert').modal('show');
             await this.props.reloadpage();
         }
     }

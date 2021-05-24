@@ -142,13 +142,11 @@ export default class ListGuest extends React.Component {
         this.state.data.forEach((guest, index) => {
             guestList.push(
                 <div className="short-post row" key={index}>
-                    <a href="/>">
+                    <a>
                         <img src={'/Guest.svg'} alt="Guest avatar" style={{ imageResolution: '300dpi' }} height="140px" width="180px" />
                     </a>
                     <div className="short-info guest">
-
                         <p className="contest-name" onClick={this.reloadPage}>{guest.name}</p>
-
                         <div className="owner-option row">
                             <DetailGuest reloadpage={this.reloadPage} gid={guest.Id} />
                             <EditGuest reloadpage={this.reloadPage} gid={guest.Id} />

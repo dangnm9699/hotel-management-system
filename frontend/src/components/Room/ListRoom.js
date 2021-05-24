@@ -129,7 +129,7 @@ export default class ListRoom extends React.Component {
                 to={{ pathname: "/login", state: { from: '/room' } }}
             ></Redirect>
         }
-        if(this.props.user.acctype !== 'Quản trị viên'){
+        if (this.props.user.acctype !== 'Quản trị viên') {
             return <Redirect to="/dashboard"></Redirect>
         }
         if (this.state.serverError === true) {
@@ -145,11 +145,11 @@ export default class ListRoom extends React.Component {
         this.state.data.forEach((room, index) => {
             roomList.push(
                 <div className="short-post row" key={index}>
-                    <a href="/>">
+                    <a>
                         <img src={'/room.jpg'} alt="Room views" style={{ imageResolution: '300dpi' }} height="140px" width="180px" />
                     </a>
                     <div className="short-info">
-                        <a href="/detailpost?postid=<?php echo $post->postid ?>">
+                        <a>
                             <p className="contest-name">{room.name}</p>
                         </a>
                         <div className="owner-option row">
