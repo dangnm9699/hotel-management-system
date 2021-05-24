@@ -11,7 +11,12 @@ exports.seed = function (knex) {
         {
           "username": "admin",
           "password": bcrypt.hashSync("123456", salt),
-          "acctype": "admin",
+          "acctype": "Quản trị viên",
+        },
+        {
+          "username": "letan1",
+          "password": bcrypt.hashSync("123456", salt),
+          "acctype": "Lễ tân",
         },
       ]);
     });
