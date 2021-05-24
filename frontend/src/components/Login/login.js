@@ -117,11 +117,13 @@ export default class Login extends React.Component {
 
       this.setState({ loading: false })
     } catch (err) {
+      // console.log("error: ", JSON.stringify(err))
       if (err.response.status === 401) {
-        this.setState({ 'logInFailed': true })
+        this.setState({ 'logInFailed': true ,loading: false })
+      }else{
+        this.setState({ "serverError": true, loading: false  })
       }
-      console.log(err)
-      this.setState({ "serverError": true })
+
     }
   }
 }

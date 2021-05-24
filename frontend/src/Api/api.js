@@ -29,6 +29,7 @@ axios.interceptors.response.use(
         console.log("origianlRequest: ", JSON.stringify(originalRequest))
         if (
             error.response.status === 401 && originalRequest.url !== "http://localhost:3001/auth/refresh_token" &&
+            originalRequest.url !== "http://localhost:3001/auth/login" &&
             !originalRequest._retry
         ) {
             originalRequest._retry = true;
