@@ -23,7 +23,7 @@ export default class Login extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <div className="container-fluid d-flex justify-content-center">
+        <div className="container-fluid content-container d-flex justify-content-center">
           <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
             <div className="spinner-border" role="status">
               <span className="sr-only">Loading...</span>
