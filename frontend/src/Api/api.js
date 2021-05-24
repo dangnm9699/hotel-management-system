@@ -1,6 +1,6 @@
 import axios from "axios";
 import Page500 from "../components/Page500/Page500";
-const baseUrl = "http://20.188.120.110:3000";
+const baseUrl = "http://20.188.120.110:3001";
 //request interceptor to add the auth token header to requests
 axios.interceptors.request.use(
     (config) => {
