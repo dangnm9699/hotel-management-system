@@ -108,7 +108,7 @@ class AddGuest extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Số điện thoại</label>
-                                        <input value={this.state.data.phonenumber} name="phonenumber" onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại khách hàng" required />
+                                        <input value={this.state.data.phonenumber} name="phonenumber" pattern='((09|03|07|08|05|02)+([0-9]{8})\b)' onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại khách hàng" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Email</label>
