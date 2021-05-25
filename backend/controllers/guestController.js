@@ -14,6 +14,7 @@ exports.createGuest = async function (req, res) {
                 success: false,
                 err,
             })
+            return
         }
         res.status(500).json({
             success: false,
