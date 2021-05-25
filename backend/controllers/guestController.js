@@ -9,6 +9,12 @@ exports.createGuest = async function (req, res) {
         })
     } catch (err) {
         console.log(err)
+        if (err && err.code === 'ER_DUP_ENTRY') {
+            res.status(409).json({
+                success: false,
+                err,
+            })
+        }
         res.status(500).json({
             success: false,
             err,
