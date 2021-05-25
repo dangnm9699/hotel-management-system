@@ -69,7 +69,21 @@ class AddGuest extends React.Component {
                 $('#modalAddForm').modal('hide');
                 $('#alert-content').html('Thêm khách hàng thành công!');
                 $('#alert').modal('show');
-            } else {
+            }else if(res.status ===409){
+                this.setState({
+                    data: {
+                        "name": '',
+                        "phonenumber": '',
+                        "email": '',
+                        "country": '',
+                        "idNumber": ''
+                    }
+                })
+                $('#modalAddApply').modal('hide');
+                $('#modalAddForm').modal('hide');
+                $('#alert-content').html('Thêm thất bại, Đã có khách hàng khác sử dụng số điện thoại này!');
+                $('#alert').modal('show');
+            }else {
                 $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
                 $('#alert').modal('show');
             }

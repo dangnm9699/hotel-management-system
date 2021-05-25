@@ -80,6 +80,20 @@ class EditGuest extends React.Component {
                 $('#' + this.state.modal.formId).modal('hide');
                 $('#alert-content').html('Cập khách hàng thành công!');
                 $('#alert').modal('show');
+            }else if(res.status ===409){
+                this.setState({
+                    data: {
+                        "name": '',
+                        "phonenumber": '',
+                        "email": '',
+                        "country": '',
+                        "idNumber": ''
+                    }
+                })
+                $('#modalAddApply').modal('hide');
+                $('#modalAddForm').modal('hide');
+                $('#alert-content').html('Cập nhật thất bại, Đã có khách hàng khách sử dụng số điện thoại này!');
+                $('#alert').modal('show');
             } else {
                 $('#alert-content').html('Có lỗi xảy ra, vui lòng thử lại sau!');
                 $('#alert').modal('show');
