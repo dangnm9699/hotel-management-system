@@ -16,7 +16,7 @@ class GuestInformation extends React.Component {
                 name: "",
                 phonenumber: "",
                 email: "",
-                country: "",
+                country: "Afghanistan",
                 idNumber: "",
             },
             searchnumber: "",

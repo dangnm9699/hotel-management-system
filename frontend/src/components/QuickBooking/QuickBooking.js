@@ -163,6 +163,11 @@ class QuickBooking extends React.Component {
                 this.setState({ notificationShow: true, message: "Đặt phòng thành công" })
                 this.setState({ reload: true })
             } else {
+                if (res.status === 409) {
+                    this.setState({ notificationShow: true, message: "Đặt phòng thất bại, SĐT đã được sử dụng!" })
+                    this.setState({ loading: false })
+                    return
+                }
                 this.setState({ notificationShow: true, message: res.data.err })
             }
             this.setState({ loading: false })
