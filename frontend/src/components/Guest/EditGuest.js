@@ -90,8 +90,8 @@ class EditGuest extends React.Component {
                         "idNumber": ''
                     }
                 })
-                $('#modalAddApply').modal('hide');
-                $('#modalAddForm').modal('hide');
+                $('#' + this.state.modal.applyId).modal('hide');
+                $('#' + this.state.modal.formId).modal('hide');
                 $('#alert-content').html('Cập nhật thất bại, Đã có khách hàng khách sử dụng số điện thoại này!');
                 $('#alert').modal('show');
             } else {
