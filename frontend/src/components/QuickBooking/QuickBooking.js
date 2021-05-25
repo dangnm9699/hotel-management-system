@@ -119,6 +119,18 @@ class QuickBooking extends React.Component {
             this.setState({ notificationShow: true, message: "Vui lòng nhập số điện thoại" })
             return
         }
+        let regex = /((09|03|07|08|05|02)+([0-9]{8})\b)/g;
+        if (guest.phonenumber && !regex.test(guest.phonenumber)) {
+            this.setState({ notificationShow: true, message: "Số điện thoại không đúng định dạng" })
+            return
+        }
+        regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/g;
+        if (guest.email && !regex.test(guest.email)) {
+            this.setState({ notificationShow: true, message: "Email không đúng định dạng" })
+            return
+        }
+
+
 
         this.setState({ loading: true })
         try {
