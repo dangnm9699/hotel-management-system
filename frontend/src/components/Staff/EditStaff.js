@@ -138,7 +138,7 @@ class EditStaff extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label>Số điện thoại</label>
-                                        <input value={this.state.data.phonenumber} required="required" name="phonenumber" onChange={this.myChangeHandler} type="text" className="form-control" placeholder="Nhập số điện thoại của nhân viên" />
+                                        <input value={this.state.data.phonenumber} required="required" pattern='((09|03|07|08|05|02)+([0-9]{8})\b)' name="phonenumber" onChange={this.myChangeHandler} type="tel" className="form-control" placeholder="Nhập số điện thoại của nhân viên" />
                                     </div>
                                     <div className="form-group">
                                         <label>Địa chỉ</label>
